@@ -5,7 +5,8 @@ from django.http import HttpResponseRedirect
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('monitorApp/', views.monitor_services, name='monitor_services'),
-    path('', lambda request: HttpResponseRedirect('/monitorApp/')),  # Redirección
+    path('monitorApp/Login', views.Login, name='Login'),
+    path('monitorApp/home', views.Home, name='home'),
+    path('', lambda request: HttpResponseRedirect('/monitorApp/')),
 ]
