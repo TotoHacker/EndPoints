@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-avrm9ajh&mw1-=bk*(f*_f5%7!1221p_=2_n(x0h5((vuw9d$r
 DEBUG = True
 
 ALLOWED_HOSTS = []
-#static images
+#Uso de imagenes estaticas
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 

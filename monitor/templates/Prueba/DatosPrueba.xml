@@ -1,4 +1,3 @@
-<!-- DatosPrueba.xml -->
 <?xml version="1.0"?>
 <Datos>
     <!-- Dato prueba en linea -->
@@ -8,7 +7,14 @@
     </Registro>
     <!-- Dato prueba caido -->
     <Registro>
-        <namesite>Dolphin Discovery</namesite>
+        <namesite>Dolphin Adventure</namesite>
         <UrlSite>https://www.dolphindiscovery.com/</UrlSite>
+    </Registro>
+    <!-- Prueba Api -->
+    <Registro>
+        <nameApi>Api Prueba</nameApi>
+        <UrlApi>http://ebgral.dtraveller.com/v2.1/tours</UrlApi>
+        <ApiKey>EAbFpF4c8fML0RY90XVV7uOvQUxXsLKIwf4lP0c795FfvM2</ApiKey><!--Necesario para poder hacer la solicitud-->
+        <Type>Post</Type>
     </Registro>
 </Datos>
