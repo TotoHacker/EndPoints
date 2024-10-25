@@ -1,0 +1,14 @@
+<!-- DatosPrueba.xml -->
+<?xml version="1.0"?>
+<Datos>
+    <!-- Dato prueba en linea -->
+    <Registro>
+        <namesite>Dolphin Discovery</namesite>
+        <UrlSite>https://www.dolphindiscovery.com/</UrlSite>
+    </Registro>
+    <!-- Dato prueba caido -->
+    <Registro>
+        <namesite>Dolphin Discovery</namesite>
+        <UrlSite>https://www.dolphindiscovery.com/</UrlSite>
+    </Registro>
+</Datos>
