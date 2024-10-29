@@ -13,7 +13,6 @@
         }
     </style>
 </head>
-<img src="{% static 'imagenes/LogoFondo.jpeg' %}" alt="fondo" class=""/>
 
 <body class="bg-white">
     <div class="flex items-center top-1/2 absolute left-24 -z-10">
@@ -38,26 +37,24 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-300">
-                    {% for service in website_status %}
+                    {% for site in website_status %}
                     <tr class="hover:bg-gray-100 transition duration-300">
-                        <td class="px-6 py-4 whitespace-nowrap">{{ service.name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap {% if service.status == 'Operativo' %}text-green-500{% else %}text-red-500{% endif %} font-bold">{{ service.status }}</td>
-                        <td class="hidden px-6 py-4 whitespace-nowrap md:table-cell">{{ service.code }}</td>
-                        <td class="hidden px-6 py-4 whitespace-nowrap md:table-cell">
-                            <img src="{% static 'imagenes/Check.png' if service.status == 'Operativo' else 'imagenes/CheckF.png' %}" alt="{{ service.status }}" class="w-8">
-                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ site.name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap {% if site.status == 'Operativo' %}text-green-600{% else %}text-red-600{% endif %} font-bold">{{ site.status }}</td>
+                        <td class="hidden px-6 py-4 whitespace-nowrap md:table-cell">{{ site.code }}</td>
+                        <td class="hidden px-6 py-4 whitespace-nowrap md:table-cell">{{ site.status }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
 
-        <h2 class="text-2xl font-bold mt-8 text-gray-800">Estado de APIs</h2>
+        <h2 class="text-2xl font-bold mt-8 text-gray-800">APIs</h2>
         <div class="overflow-x-auto border-solid border-2 border-sky-500 rounded-xl">
             <table class="min-w-full divide-y divide-gray-300 bg-white rounded-lg overflow-hidden">
                 <thead class="bg-gray-50 text-gray-800">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nombre</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">API</th>
                         <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Estado Actual</th>
                         <th class="hidden px-6 py-3 text-left text-xs font-medium uppercase tracking-wider md:table-cell">Código de Respuesta</th>
                         <th class="hidden px-6 py-3 text-left text-xs font-medium uppercase tracking-wider md:table-cell">Estado</th>
@@ -67,11 +64,33 @@
                     {% for api in api_status %}
                     <tr class="hover:bg-gray-100 transition duration-300">
                         <td class="px-6 py-4 whitespace-nowrap">{{ api.name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap {% if api.status == 'Operativo' %}text-green-500{% else %}text-red-500{% endif %} font-bold">{{ api.status }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap {% if api.status == 'Operativo' %}text-green-600{% else %}text-red-600{% endif %} font-bold">{{ api.status }}</td>
                         <td class="hidden px-6 py-4 whitespace-nowrap md:table-cell">{{ api.code }}</td>
-                        <td class="hidden px-6 py-4 whitespace-nowrap md:table-cell">
-                            <img src="{% static 'imagenes/CheckF.png' if api.status == 'Operativo' else 'imagenes/CheckF.png' %}" alt="{{ api.status }}" class="w-8">
-                        </td>
+                        <td class="hidden px-6 py-4 whitespace-nowrap md:table-cell">{{ api.status }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h2 class="text-2xl font-bold mt-8 text-gray-800">Servicios SOAP</h2>
+        <div class="overflow-x-auto border-solid border-2 border-sky-500 rounded-xl">
+            <table class="min-w-full divide-y divide-gray-300 bg-white rounded-lg overflow-hidden">
+                <thead class="bg-gray-50 text-gray-800">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Servicio SOAP</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Estado Actual</th>
+                        <th class="hidden px-6 py-3 text-left text-xs font-medium uppercase tracking-wider md:table-cell">Código de Respuesta</th>
+                        <th class="hidden px-6 py-3 text-left text-xs font-medium uppercase tracking-wider md:table-cell">Estado</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-300">
+                    {% for soap in soap_status %}
+                    <tr class="hover:bg-gray-100 transition duration-300">
+                        <td class="px-6 py-4 whitespace-nowrap">{{ soap.name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap {% if soap.status == 'Operativo' %}text-green-600{% else %}text-red-600{% endif %} font-bold">{{ soap.status }}</td>
+                        <td class="hidden px-6 py-4 whitespace-nowrap md:table-cell">{{ soap.code }}</td>
+                        <td class="hidden px-6 py-4 whitespace-nowrap md:table-cell">{{ soap.status }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

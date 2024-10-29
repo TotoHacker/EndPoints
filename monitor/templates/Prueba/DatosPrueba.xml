@@ -1,20 +1,45 @@
 <?xml version="1.0"?>
 <Datos>
-    <!-- Dato prueba en linea -->
+    <!-- Site Records -->
     <Registro>
         <namesite>Dolphin Discovery</namesite>
         <UrlSite>https://www.dolphindiscovery.com/</UrlSite>
     </Registro>
-    <!-- Dato prueba caido -->
     <Registro>
         <namesite>Dolphin Adventure</namesite>
-        <UrlSite>https://www.dolphindiscovery.com/</UrlSite>
+        <UrlSite>https://www.dlphindicovery.com/</UrlSite>
     </Registro>
-    <!-- Prueba Api -->
+    <Registro>
+        <namesite>Marineland</namesite>
+        <UrlSite>https://marineland.net/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Blog Coveja</namesite>
+        <UrlSite>https://blog.dolphincoveja.com/</UrlSite>
+    </Registro>
+
+    <!-- API Details -->
     <Registro>
         <nameApi>Api Prueba</nameApi>
         <UrlApi>http://ebgral.dtraveller.com/v2.1/tours</UrlApi>
-        <ApiKey>EAbFpF4c8fML0RY90XVV7uOvQUxXsLKIwf4lP0c795FfvM2</ApiKey><!--Necesario para poder hacer la solicitud-->
+        <ApiKey>EAbFpF4c8fML0RY90XVV7uOvQUxXsLKIwf4lP0c795FfvM2</ApiKey>
         <Type>Post</Type>
     </Registro>
+
+    <!-- SOAP API Example -->
+    <SOAP>
+        <Request>
+            <RequestBody>
+                <![CDATA[
+                <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+                    <soap:Body>
+                        <GetTour xmlns="http://tempuri.org/">
+                            <tourId>1</tourId>
+                        </GetTour>
+                    </soap:Body>
+                </soap:Envelope>
+                ]]>
+            </RequestBody>
+        </Request>
+    </SOAP>
 </Datos>
