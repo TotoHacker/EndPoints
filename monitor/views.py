@@ -3,86 +3,169 @@ import requests
 from django.conf import settings
 from django.shortcuts import render
 import xml.etree.ElementTree as ET
+import sib_api_v3_sdk
+from sib_api_v3_sdk.rest import ApiException
+from django.http import JsonResponse
 
-# Función para cargar URLs, APIs y SOAP desde el XML
+def check_blog_status(request):
+    url = 'https://blog.dolphindiscovery.com.mx/'
+    
+    try:
+        response = requests.get(url)
+        
+        # Recopilamos la información necesaria
+        status_code = response.status_code
+        headers = {key: value for key, value in response.headers.items()}
+        cookies = request.COOKIES
+        user_agent = request.META.get('HTTP_USER_AGENT', 'Unknown')
+
+        # Preparamos la información para el contexto
+        context = {
+            'status_code': status_code,
+            'headers': headers,
+            'cookies': cookies,
+            'user_agent': user_agent,
+        }
+
+        # Puedes renderizar una plantilla o devolver un JsonResponse
+        return render(request, 'blog_status.html', context)
+        # o si prefieres retornar JSON:
+        # return JsonResponse(context)
+
+    except requests.exceptions.RequestException as e:
+        # Manejo de errores en la solicitud
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+
+
+
+# Function to load URLs, APIs, and SOAP services from the XML
 def load_services_from_xml():
     websites = []
     apis = []
     soap_services = []
-    
+
     xml_path = os.path.join(settings.BASE_DIR, 'monitor', 'templates', 'Prueba', 'DatosPrueba.xml')
-    
+
     if not os.path.isfile(xml_path):
         print(f"Error: El archivo XML no se encuentra en la ruta: {xml_path}")
         return websites, apis, soap_services
-    
+
     tree = ET.parse(xml_path)
     root = tree.getroot()
 
-    # Cargar servicios y APIs
+    # Load websites
     for item in root.findall('Registro'):
         url = item.find('UrlSite')
         name = item.find('namesite')
         if url is not None and name is not None:
             websites.append({'name': name.text, 'url': url.text})
-        
+
+        # Load APIs
         api_url = item.find('UrlApi')
         api_name = item.find('nameApi')
         if api_url is not None and api_name is not None:
-            method = item.find('Type').text if item.find('Type') is not None else 'GET'
+            method = item.find('Type').text if item.find('Type') is not None else 'HEAD'
             apis.append({'name': api_name.text, 'url': api_url.text, 'method': method})
 
-    # Cargar servicios SOAP
-    soap_request = root.find('SOAP/Request/RequestBody')
-    if soap_request is not None:
+    # Load SOAP services for both servers
+    for server_number in range(1, 3):
+        soap_request = f"""<?xml version="1.0" encoding="utf-8"?>
+        <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+          <soap:Body>
+            <obtenerEstadodeLaConexion xmlns="http://dtraveller.com/">
+              <server>{server_number}</server>
+            </obtenerEstadodeLaConexion>
+          </soap:Body>
+        </soap:Envelope>"""
+        server_name = f'Servidor {"Mexico" if server_number == 1 else "Caribe"} {server_number}'
+
         soap_services.append({
-            'name': 'Ejemplo de API SOAP',
-            'url': 'http://ebgral.dtraveller.com/v2.1/tours',  # Cambia esto si necesitas una URL específica para el SOAP
-            'body': soap_request.text.strip()
+            'name': server_name,
+            'url': 'https://dtnsr-ws.dtraveller.com/dtraveller.asmx?op=obtenerEstadodeLaConexion',
+            'body': soap_request
         })
 
     return websites, apis, soap_services
 
-# Función para verificar el estado de cada servicio o API
+# Function to check the status of each website or API using a HEAD request
 def check_service_status(service):
     try:
-        if 'method' in service:
-            response = requests.request(service['method'].upper(), service['url'], timeout=5)
-        else:
-            response = requests.get(service['url'], timeout=5)
-        
-        status = 'Operativo' if response.status_code == 200 else 'Caído'
-        return {'name': service['name'], 'status': status, 'code': response.status_code}
-    except requests.exceptions.RequestException:
-        return {'name': service['name'], 'status': 'Caído', 'code': 'N/A'}
+        # Asumimos que los sitios web deben usar 'text/html'
+        headers = {'Accept': 'text/html'}
 
-# Nueva función para verificar el estado de un servicio SOAP
+        # Si hay un encabezado específico en el servicio, lo usamos
+        if 'Header' in service:
+            headers['Accept'] = service['Header']
+
+        if 'method' in service and service['method'].upper() != 'HEAD':
+            response = requests.request(service['method'].upper(), service['url'], headers=headers, timeout=5)
+        else:
+            response = requests.head(service['url'], headers=headers, timeout=5)
+
+        # Manejo de estado detallado
+        if response.status_code == 200:
+            status = 'Operativo'
+        elif response.status_code == 406:
+            status = 'Error 406: Not Acceptable'
+        else:
+            status = 'Caído'
+
+        return {
+            'name': service['name'],
+            'status': status,
+            'code': response.status_code,
+            'response': response.text  # Opcional, agregar el texto de la respuesta para depuración
+        }
+    except requests.exceptions.RequestException as e:
+        print(f"Error checking service {service['name']}: {e}")
+        return {
+            'name': service['name'],
+            'status': 'Caído',
+            'code': 'N/A'
+        }
+
+# New function to check the status of a SOAP service
 def check_soap_status(soap_service):
     headers = {'Content-Type': 'text/xml; charset=utf-8'}
     try:
         response = requests.post(soap_service['url'], data=soap_service['body'], headers=headers, timeout=5)
-        
-        # Aquí puedes verificar la respuesta SOAP en lugar del código de estado
-        status = 'Operativo' if response.status_code == 200 and "<GetTourResponse" in response.text else 'Caído'
+        status = 'Operativo' if response.status_code == 200 else 'Caído'
         return {'name': soap_service['name'], 'status': status, 'code': response.status_code}
-    except requests.exceptions.RequestException:
+    except requests.exceptions.RequestException as e:
+        print(f"Error checking SOAP service {soap_service['name']}: {e}")
         return {'name': soap_service['name'], 'status': 'Caído', 'code': 'N/A'}
 
-# Vista principal para mostrar el estado de los servicios
+# View to display the services status
+def services_status_view(request):
+    websites, apis, soap_services = load_services_from_xml()
+
+    # Check status of each service
+    website_status = [check_service_status(service) for service in websites]
+    api_status = [check_service_status(service) for service in apis]
+    soap_status = [check_soap_status(service) for service in soap_services]
+
+    return render(request, 'Prueba/services_status.html', {
+        'website_status': website_status,
+        'api_status': api_status,
+        'soap_status': soap_status,
+    })
+
+# Main view to display the status of services
 def monitor_services(request):
     websites, apis, soap_services = load_services_from_xml()
     website_status = [check_service_status(service) for service in websites]
     api_status = [check_service_status(api) for api in apis]
     soap_status = [check_soap_status(soap) for soap in soap_services]
-    
+
     return render(request, 'monitorApp/status_list.html', {
         'website_status': website_status,
         'api_status': api_status,
         'soap_status': soap_status,
     })
 
-
-# Otras vistas de ejemplo
+# Other example views
 def Login(request):
     return render(request, 'monitorApp/Login.html')
 

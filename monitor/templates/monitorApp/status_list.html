@@ -11,22 +11,39 @@
         table {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
+        #loading {
+            display: flex; /* Cambiado a flex para centrar contenido */
+            justify-content: center; /* Centrar horizontalmente */
+            align-items: center; /* Centrar verticalmente */
+            height: 100vh; /* Tomar toda la altura de la ventana */
+            position: absolute; /* Mantenerlo en la misma posición */
+            width: 100%; /* Tomar toda la anchura */
+            background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco con opacidad */
+            z-index: 10; /* Asegurarse de que esté por encima de otros elementos */
+        }
     </style>
 </head>
 
 <body class="bg-white">
-    <div class="flex items-center top-1/2 absolute left-24 -z-10">
+    <div class="flex items-center top-1/2 absolute left-24 z-[-20]">
         <img src="{% static 'imagenes/LogoFondo.jpeg' %}" alt="fondo" class="h-96 fixed opacity-10 -z-10"/>
     </div>
+
+
+    <img src="{% static 'imagenes/LogoFondo.jpeg' %}" alt="Logo" class="mx-auto"/>
+    <div id="loading">
+        <img src="{% static 'imagenes/Cargando.webp' %}" alt="Cargando" class="mb-4"/><!-- Este se mostrará mientras el sistema checa el estado de los sitios una vez cargado se mostrará lo demás -->
+        <h1>"Un momento mientras el sistema carga los datos 😊🐬"</h1>
+    </div>
     
-    <div class="container h-5/6 mx-auto p-10 border-solid border-2 border-sky-500">
+    <div class="container h-5/6 mx-auto p-10 border-solid border-2 border-sky-500" id="status-container" style="display: none;">
         <div class="flex justify-between items-center">
             <h1 class="text-3xl font-bold text-black">Dolphin Endpoints</h1>
             <a href="Login" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Iniciar Sesión</a>
         </div>
 
         <h2 class="text-2xl font-bold mt-8 text-gray-800">Sitios Web</h2>
-        <div class="overflow-x-auto border-solid border-2 border-sky-500 rounded-xl">
+        <div class="overflow-x-auto border-solid border-2 border-sky-500 rounded-xl z-10">
             <table class="min-w-full divide-y divide-gray-300 bg-white rounded-lg overflow-hidden">
                 <thead class="bg-gray-50 text-gray-800">
                     <tr>
@@ -39,10 +56,10 @@
                 <tbody class="divide-y divide-gray-300">
                     {% for site in website_status %}
                     <tr class="hover:bg-gray-100 transition duration-300">
-                        <td class="px-6 py-4 whitespace-nowrap">{{ site.name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap {% if site.status == 'Operativo' %}text-green-600{% else %}text-red-600{% endif %} font-bold">{{ site.status }}</td>
-                        <td class="hidden px-6 py-4 whitespace-nowrap md:table-cell">{{ site.code }}</td>
-                        <td class="hidden px-6 py-4 whitespace-nowrap md:table-cell">{{ site.status }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-left">{{ site.name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-left {% if site.status == 'Operativo' %}text-green-600{% else %}text-red-600{% endif %} font-bold">{{ site.status }}</td>
+                        <td class="hidden px-6 py-4 whitespace-nowrap text-left md:table-cell">{{ site.code }}</td>
+                        <td class="hidden px-6 py-4 whitespace-nowrap text-left md:table-cell">{{ site.status }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -50,7 +67,7 @@
         </div>
 
         <h2 class="text-2xl font-bold mt-8 text-gray-800">APIs</h2>
-        <div class="overflow-x-auto border-solid border-2 border-sky-500 rounded-xl">
+        <div class="overflow-x-auto border-solid border-2 border-sky-500 rounded-xl z-10">
             <table class="min-w-full divide-y divide-gray-300 bg-white rounded-lg overflow-hidden">
                 <thead class="bg-gray-50 text-gray-800">
                     <tr>
@@ -63,10 +80,10 @@
                 <tbody class="divide-y divide-gray-300">
                     {% for api in api_status %}
                     <tr class="hover:bg-gray-100 transition duration-300">
-                        <td class="px-6 py-4 whitespace-nowrap">{{ api.name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap {% if api.status == 'Operativo' %}text-green-600{% else %}text-red-600{% endif %} font-bold">{{ api.status }}</td>
-                        <td class="hidden px-6 py-4 whitespace-nowrap md:table-cell">{{ api.code }}</td>
-                        <td class="hidden px-6 py-4 whitespace-nowrap md:table-cell">{{ api.status }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-left">{{ api.name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-left {% if api.status == 'Operativo' %}text-green-600{% else %}text-red-600{% endif %} font-bold">{{ api.status }}</td>
+                        <td class="hidden px-6 py-4 whitespace-nowrap text-left md:table-cell">{{ api.code }}</td>
+                        <td class="hidden px-6 py-4 whitespace-nowrap text-left md:table-cell">{{ api.status }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -74,7 +91,7 @@
         </div>
 
         <h2 class="text-2xl font-bold mt-8 text-gray-800">Servicios SOAP</h2>
-        <div class="overflow-x-auto border-solid border-2 border-sky-500 rounded-xl">
+        <div class="overflow-x-auto border-solid border-2 border-sky-500 rounded-xl z-10">
             <table class="min-w-full divide-y divide-gray-300 bg-white rounded-lg overflow-hidden">
                 <thead class="bg-gray-50 text-gray-800">
                     <tr>
@@ -87,15 +104,33 @@
                 <tbody class="divide-y divide-gray-300">
                     {% for soap in soap_status %}
                     <tr class="hover:bg-gray-100 transition duration-300">
-                        <td class="px-6 py-4 whitespace-nowrap">{{ soap.name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap {% if soap.status == 'Operativo' %}text-green-600{% else %}text-red-600{% endif %} font-bold">{{ soap.status }}</td>
-                        <td class="hidden px-6 py-4 whitespace-nowrap md:table-cell">{{ soap.code }}</td>
-                        <td class="hidden px-6 py-4 whitespace-nowrap md:table-cell">{{ soap.status }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-left">{{ soap.name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-left {% if soap.status == 'Operativo' %}text-green-600{% else %}text-red-600{% endif %} font-bold">{{ soap.status }}</td>
+                        <td class="hidden px-6 py-4 whitespace-nowrap text-left md:table-cell">{{ soap.code }}</td>
+                        <td class="hidden px-6 py-4 whitespace-nowrap text-left md:table-cell">{{ soap.status }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
+
+
+
+
+    
+    <script>
+        // Muestra el mensaje de carga y oculta el contenedor de estado
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById('loading').style.display = 'flex';
+            document.getElementById('status-container').style.display = 'none';
+        });
+
+        // Al cargar el contenido, oculta el mensaje de carga y muestra el contenedor de estado
+        window.onload = function() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('status-container').style.display = 'block';
+        };
+    </script>
 </body>
 </html>

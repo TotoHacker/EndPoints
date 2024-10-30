@@ -5,41 +5,212 @@
         <namesite>Dolphin Discovery</namesite>
         <UrlSite>https://www.dolphindiscovery.com/</UrlSite>
     </Registro>
+    
+    <!-- Additional Sites -->
     <Registro>
-        <namesite>Dolphin Adventure</namesite>
-        <UrlSite>https://www.dlphindicovery.com/</UrlSite>
+        <namesite>Aqua Tours Cancun</namesite>
+        <UrlSite>https://www.aquatourscancun.com/</UrlSite>
     </Registro>
     <Registro>
+        <namesite>Aquaventuras</namesite>
+        <UrlSite>https://www.aquaventuras.com/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Aquaventuras MX</namesite>
+        <UrlSite>https://www.aquaventuras.com.mx/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Dolphin Discovery MX</namesite>
+        <UrlSite>https://www.dolphindiscovery.com.mx/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Dolphin Discovery BR</namesite>
+        <UrlSite>https://www.dolphindiscovery.com.br/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Dolphin Discovery FR</namesite>
+        <UrlSite>https://dolphindiscovery.fr/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Dolphin Coveja</namesite>
+        <UrlSite>https://www.dolphincoveja.com/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Dolphinaris</namesite>
+        <UrlSite>https://www.dolphinaris.com/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Dolphin Cove KY</namesite>
+        <UrlSite>https://www.dolphincove.ky/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Dtraveller</namesite>
+        <UrlSite>https://www.dtraveller.com</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Dtraveller MX</namesite>
+        <UrlSite>https://www.dtraveller.com.mx/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Dolphin Connection</namesite>
+        <UrlSite>https://www.dolphinconnection.com/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Garrafon</namesite>
+        <UrlSite>https://www.garrafon.com/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Garrafon MX</namesite>
+        <UrlSite>https://www.garrafon.com.mx/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Columbus Cancun</namesite>
+        <UrlSite>https://www.columbuscancun.com.mx/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Yaaman Adventure</namesite>
+        <UrlSite>https://www.yaamanadventure.com/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Miami Seaquarium</namesite>
+        <UrlSite>https://miamiseaquarium.com/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Selvatica</namesite>
+        <UrlSite>https://www.selvatica.com.mx/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Selva Magica</namesite>
+        <UrlSite>https://www.selvamagica.com.mx/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Ventura Park</namesite>
+        <UrlSite>https://www.venturapark.com/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Ocean Adventures Punta Cana</namesite>
+        <UrlSite>https://www.oceanadventures-puntacana.com/</UrlSite>
+    </Registro>
+
+    <!--Sitios que mandan error 406 pero en la terminal manda bien el estado-->
+     <Registro>
         <namesite>Marineland</namesite>
         <UrlSite>https://marineland.net/</UrlSite>
     </Registro>
     <Registro>
         <namesite>Blog Coveja</namesite>
         <UrlSite>https://blog.dolphincoveja.com/</UrlSite>
+        <Header>text/html</Header>
+    </Registro>
+    <!-- Blogs -->
+    <!-- La información que proporcionaste es la respuesta completa de una solicitud HTTP al sitio web `https://blog.dolphindiscovery.com.mx/`. Aquí, el estado de la respuesta es **200**, lo que significa que la solicitud fue exitosa. Este formato es común en las respuestas de HTTP y se presenta de la siguiente manera:
+
+1. **Estado de la respuesta**: Indica el código HTTP (por ejemplo, `200` para éxito).
+2. **Encabezados**: Contienen información sobre la respuesta, como:
+   - `content-type`: Tipo de contenido, aquí es `text/html; charset=UTF-8`.
+   - `content-encoding`: Método de compresión, `gzip`.
+   - Otros encabezados como `server`, `vary`, `x-endurance-cache-level`, entre otros, que detallan características adicionales de la respuesta.
+3. **Cookies**: Información sobre las cookies que el servidor está utilizando.
+4. **Información adicional de la solicitud**: Como `User-Agent`, `Accept`, y otros detalles que indican las preferencias del navegador y detalles de la solicitud.
+
+Este es el formato estándar para registrar o visualizar la respuesta y los encabezados de una solicitud HTTP, como los que se verían en una herramienta de desarrollo web o en una plataforma de API.  -->
+
+    <Registro>
+        <namesite>Blog Dolphin Discovery</namesite>
+        <UrlSite>https://blog.dolphindiscovery.com.mx</UrlSite>
+        <Header>text/html</Header>
+    </Registro>
+    <Registro>
+        <namesite>Blog Dolphin Discovery MX</namesite>
+        <UrlSite>https://blog.dolphindiscovery.com.mx/</UrlSite>
+        <Header>text/html</Header>
+    </Registro>
+    <Registro>
+        <namesite>Blog Ocean Adventures Punta Cana</namesite>
+        <UrlSite>https://blog.oceanadventures-puntacana.com/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Blog Aqua Tours Cancun</namesite>
+        <UrlSite>https://blog.aquatourscancun.com/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Blog Garrafon</namesite>
+        <UrlSite>https://blog.garrafon.com/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Blog Garrafon MX</namesite>
+        <UrlSite>https://blog.garrafon.com.mx/</UrlSite>
     </Registro>
 
-    <!-- API Details -->
+    
+    <!-- <Registro>
+        <namesite>Blog Aquaventuras MX</namesite>
+        <UrlSite>https://blog.aquaventuras.com.mx/</UrlSite>
+    </Registro>
     <Registro>
+        <namesite>Blog Yaaman Adventure</namesite>
+        <UrlSite>https://blog.yaamanadventure.com/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Blog Dolphin Coveja</namesite>
+        <UrlSite>https://blog.dolphincoveja.com/</UrlSite>
+    </Registro> -->
+    <!-- <Registro>
+        <namesite>Blog Miami Seaquarium</namesite>
+        <UrlSite>https://blog.miamiseaquarium.com/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Blog Dolphin Connection</namesite>
+        <UrlSite>https://blog.dolphinconnection.com/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Blog Marineland</namesite>
+        <UrlSite>https://blog.marineland.net/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Blog Aquarium</namesite>
+        <UrlSite>https://blog.aquarium.com.ar/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>L21</namesite>
+        <UrlSite>https://l21.com/</UrlSite>
+    </Registro> -->
+    <!-- <Registro>
+        <namesite>Proyecto Brujula</namesite>
+        <UrlSite>https://www.proyectobrujula.com/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Cancun Tips</namesite>
+        <UrlSite>https://cancuntips.com/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>L21 MX</namesite>
+        <UrlSite>https://l21.mx/</UrlSite>
+    </Registro> -->
+    
+    <!-- API Details -->
+    <!-- <Registro>
         <nameApi>Api Prueba</nameApi>
         <UrlApi>http://ebgral.dtraveller.com/v2.1/tours</UrlApi>
         <ApiKey>EAbFpF4c8fML0RY90XVV7uOvQUxXsLKIwf4lP0c795FfvM2</ApiKey>
         <Type>Post</Type>
-    </Registro>
+    </Registro> -->
 
     <!-- SOAP API Example -->
-    <SOAP>
-        <Request>
-            <RequestBody>
-                <![CDATA[
-                <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-                    <soap:Body>
-                        <GetTour xmlns="http://tempuri.org/">
-                            <tourId>1</tourId>
-                        </GetTour>
-                    </soap:Body>
-                </soap:Envelope>
-                ]]>
-            </RequestBody>
-        </Request>
-    </SOAP>
+    <!--Mexico-->
+    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+        <soap:Body>
+            <obtenerEstadodeLaConexion xmlns="http://dtraveller.com/">
+            <server>1</server>
+            </obtenerEstadodeLaConexion>
+        </soap:Body>
+    </soap:Envelope>
+    <!--Caribe-->
+    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+        <soap:Body>
+            <obtenerEstadodeLaConexion xmlns="http://dtraveller.com/">
+            <server>2</server>
+            </obtenerEstadodeLaConexion>
+        </soap:Body>
+    </soap:Envelope>
 </Datos>
