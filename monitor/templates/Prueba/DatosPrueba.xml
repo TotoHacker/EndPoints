@@ -100,30 +100,16 @@
     <Registro>
         <namesite>Blog Coveja</namesite>
         <UrlSite>https://blog.dolphincoveja.com/</UrlSite>
-        <Header>text/html</Header>
     </Registro>
     <!-- Blogs -->
-    <!-- La información que proporcionaste es la respuesta completa de una solicitud HTTP al sitio web `https://blog.dolphindiscovery.com.mx/`. Aquí, el estado de la respuesta es **200**, lo que significa que la solicitud fue exitosa. Este formato es común en las respuestas de HTTP y se presenta de la siguiente manera:
-
-1. **Estado de la respuesta**: Indica el código HTTP (por ejemplo, `200` para éxito).
-2. **Encabezados**: Contienen información sobre la respuesta, como:
-   - `content-type`: Tipo de contenido, aquí es `text/html; charset=UTF-8`.
-   - `content-encoding`: Método de compresión, `gzip`.
-   - Otros encabezados como `server`, `vary`, `x-endurance-cache-level`, entre otros, que detallan características adicionales de la respuesta.
-3. **Cookies**: Información sobre las cookies que el servidor está utilizando.
-4. **Información adicional de la solicitud**: Como `User-Agent`, `Accept`, y otros detalles que indican las preferencias del navegador y detalles de la solicitud.
-
-Este es el formato estándar para registrar o visualizar la respuesta y los encabezados de una solicitud HTTP, como los que se verían en una herramienta de desarrollo web o en una plataforma de API.  -->
-
+    
     <Registro>
         <namesite>Blog Dolphin Discovery</namesite>
         <UrlSite>https://blog.dolphindiscovery.com.mx</UrlSite>
-        <Header>text/html</Header>
     </Registro>
     <Registro>
         <namesite>Blog Dolphin Discovery MX</namesite>
         <UrlSite>https://blog.dolphindiscovery.com.mx/</UrlSite>
-        <Header>text/html</Header>
     </Registro>
     <Registro>
         <namesite>Blog Ocean Adventures Punta Cana</namesite>
@@ -143,7 +129,7 @@ Este es el formato estándar para registrar o visualizar la respuesta y los enca
     </Registro>
 
     
-    <!-- <Registro>
+    <Registro>
         <namesite>Blog Aquaventuras MX</namesite>
         <UrlSite>https://blog.aquaventuras.com.mx/</UrlSite>
     </Registro>
@@ -154,8 +140,8 @@ Este es el formato estándar para registrar o visualizar la respuesta y los enca
     <Registro>
         <namesite>Blog Dolphin Coveja</namesite>
         <UrlSite>https://blog.dolphincoveja.com/</UrlSite>
-    </Registro> -->
-    <!-- <Registro>
+    </Registro> 
+    <Registro>
         <namesite>Blog Miami Seaquarium</namesite>
         <UrlSite>https://blog.miamiseaquarium.com/</UrlSite>
     </Registro>
@@ -174,8 +160,8 @@ Este es el formato estándar para registrar o visualizar la respuesta y los enca
     <Registro>
         <namesite>L21</namesite>
         <UrlSite>https://l21.com/</UrlSite>
-    </Registro> -->
-    <!-- <Registro>
+    </Registro> 
+    <Registro>
         <namesite>Proyecto Brujula</namesite>
         <UrlSite>https://www.proyectobrujula.com/</UrlSite>
     </Registro>
@@ -186,7 +172,7 @@ Este es el formato estándar para registrar o visualizar la respuesta y los enca
     <Registro>
         <namesite>L21 MX</namesite>
         <UrlSite>https://l21.mx/</UrlSite>
-    </Registro> -->
+    </Registro> 
     
     <!-- API Details -->
     <!-- <Registro>

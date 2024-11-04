@@ -92,19 +92,21 @@ def load_services_from_xml():
 # Function to check the status of each website or API using a HEAD request
 def check_service_status(service):
     try:
-        # Asumimos que los sitios web deben usar 'text/html'
-        headers = {'Accept': 'text/html'}
+        headers = {
+            'Accept': '/',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'
+        }
+        
+        # Usamos GET en lugar de HEAD
+        response = requests.get(service['url'], headers=headers, timeout=5)
 
-        # Si hay un encabezado específico en el servicio, lo usamos
-        if 'Header' in service:
-            headers['Accept'] = service['Header']
+        #Lo que trae el sitio xd
+        # print(f"URL: {service['url']}")
+        # print(f"Status Code: {response.status_code}")
+        # print(f"Headers: {response.headers}")
+        # print(f"Content: {response.text[:500]}")  
 
-        if 'method' in service and service['method'].upper() != 'HEAD':
-            response = requests.request(service['method'].upper(), service['url'], headers=headers, timeout=5)
-        else:
-            response = requests.head(service['url'], headers=headers, timeout=5)
-
-        # Manejo de estado detallado
+        # Verificamos el estado de la respuesta
         if response.status_code == 200:
             status = 'Operativo'
         elif response.status_code == 406:
@@ -116,7 +118,7 @@ def check_service_status(service):
             'name': service['name'],
             'status': status,
             'code': response.status_code,
-            'response': response.text  # Opcional, agregar el texto de la respuesta para depuración
+            'response': response.text[:500]
         }
     except requests.exceptions.RequestException as e:
         print(f"Error checking service {service['name']}: {e}")
@@ -125,7 +127,6 @@ def check_service_status(service):
             'status': 'Caído',
             'code': 'N/A'
         }
-
 # New function to check the status of a SOAP service
 def check_soap_status(soap_service):
     headers = {'Content-Type': 'text/xml; charset=utf-8'}
