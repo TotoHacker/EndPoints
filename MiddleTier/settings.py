@@ -27,10 +27,6 @@ SECRET_KEY = 'django-insecure-avrm9ajh&mw1-=bk*(f*_f5%7!1221p_=2_n(x0h5((vuw9d$r
 DEBUG = True
 
 ALLOWED_HOSTS = []
-#Uso de imagenes estaticas
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-
 #email
 # EMAIL_HOST = 'smtp.googlemail.com'
 # EMAIL_PORT = 587
@@ -61,12 +57,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'endpoins.urls'
+ROOT_URLCONF = 'MiddleTier.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'templates')],
+        'DIRS': [os.path.join(BASE_DIR,'Client/templates/')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,8 +74,14 @@ TEMPLATES = [
         },
     },
 ]
+#Uso de imagenes estaticas
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'Client', 'static'),
+]
 
-WSGI_APPLICATION = 'endpoins.wsgi.application'
+WSGI_APPLICATION = 'MiddleTier.wsgi.application'
 
 
 # Database
@@ -125,7 +127,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

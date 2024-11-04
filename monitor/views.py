@@ -7,37 +7,6 @@ import sib_api_v3_sdk
 from sib_api_v3_sdk.rest import ApiException
 from django.http import JsonResponse
 
-def check_blog_status(request):
-    url = 'https://blog.dolphindiscovery.com.mx/'
-    
-    try:
-        response = requests.get(url)
-        
-        # Recopilamos la información necesaria
-        status_code = response.status_code
-        headers = {key: value for key, value in response.headers.items()}
-        cookies = request.COOKIES
-        user_agent = request.META.get('HTTP_USER_AGENT', 'Unknown')
-
-        # Preparamos la información para el contexto
-        context = {
-            'status_code': status_code,
-            'headers': headers,
-            'cookies': cookies,
-            'user_agent': user_agent,
-        }
-
-        # Puedes renderizar una plantilla o devolver un JsonResponse
-        return render(request, 'blog_status.html', context)
-        # o si prefieres retornar JSON:
-        # return JsonResponse(context)
-
-    except requests.exceptions.RequestException as e:
-        # Manejo de errores en la solicitud
-        return JsonResponse({'error': str(e)}, status=500)
-
-
-
 
 
 # Function to load URLs, APIs, and SOAP services from the XML
@@ -46,7 +15,7 @@ def load_services_from_xml():
     apis = []
     soap_services = []
 
-    xml_path = os.path.join(settings.BASE_DIR, 'monitor', 'templates', 'Prueba', 'DatosPrueba.xml')
+    xml_path = os.path.join(settings.BASE_DIR, 'Server', 'Prueba', 'DatosPrueba.xml')
 
     if not os.path.isfile(xml_path):
         print(f"Error: El archivo XML no se encuentra en la ruta: {xml_path}")
@@ -90,7 +59,7 @@ def load_services_from_xml():
     return websites, apis, soap_services
 
 # Function to check the status of each website or API using a HEAD request
-def check_service_status(service):
+# def check_service_status(service):
     try:
         headers = {
             'Accept': '/',
@@ -127,7 +96,6 @@ def check_service_status(service):
             'status': 'Caído',
             'code': 'N/A'
         }
-# New function to check the status of a SOAP service
 def check_soap_status(soap_service):
     headers = {'Content-Type': 'text/xml; charset=utf-8'}
     try:
@@ -143,26 +111,26 @@ def services_status_view(request):
     websites, apis, soap_services = load_services_from_xml()
 
     # Check status of each service
-    website_status = [check_service_status(service) for service in websites]
-    api_status = [check_service_status(service) for service in apis]
+    # website_status = [check_service_status(service) for service in websites]
+    # api_status = [check_service_status(service) for service in apis]
     soap_status = [check_soap_status(service) for service in soap_services]
 
-    return render(request, 'Prueba/services_status.html', {
-        'website_status': website_status,
-        'api_status': api_status,
+    return render(request, 'monitorApp/status_list.html', {
+        # 'website_status': website_status,
+        # 'api_status': api_status,
         'soap_status': soap_status,
     })
 
 # Main view to display the status of services
 def monitor_services(request):
     websites, apis, soap_services = load_services_from_xml()
-    website_status = [check_service_status(service) for service in websites]
-    api_status = [check_service_status(api) for api in apis]
+    # website_status = [check_service_status(service) for service in websites]
+    # api_status = [check_service_status(api) for api in apis]
     soap_status = [check_soap_status(soap) for soap in soap_services]
 
     return render(request, 'monitorApp/status_list.html', {
-        'website_status': website_status,
-        'api_status': api_status,
+        # 'website_status': website_status,
+        # 'api_status': api_status,
         'soap_status': soap_status,
     })
 
@@ -171,4 +139,4 @@ def Login(request):
     return render(request, 'monitorApp/Login.html')
 
 def Home(request):
-    return render(request, 'monitorApp/Admin/Home.html')
+    return render(request, 'monitorApp/Home.html')
