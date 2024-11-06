@@ -27,13 +27,11 @@ SECRET_KEY = 'django-insecure-avrm9ajh&mw1-=bk*(f*_f5%7!1221p_=2_n(x0h5((vuw9d$r
 DEBUG = True
 
 ALLOWED_HOSTS = []
-#email
-# EMAIL_HOST = 'smtp.googlemail.com'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = config('USER_MAIL')
-# EMAIL_HOST_PASSWORD = config('USER_MAIL_PASSWORD')
-# EMAIL_USE_TLS = True
-
+EMAIL_HOST = 'smtp.googlemail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'pruebasendemail134@gmail.com'
+EMAIL_HOST_PASSWORD = 'baqn dkjc vgwr oxdj'
+EMAIL_USE_TLS = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -75,12 +73,12 @@ TEMPLATES = [
     },
 ]
 #Uso de imagenes estaticas
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'Client', 'static'),
+    BASE_DIR / "Client" / "static"
 ]
 
+print("BASE_DIR:", BASE_DIR)
 WSGI_APPLICATION = 'MiddleTier.wsgi.application'
 
 
