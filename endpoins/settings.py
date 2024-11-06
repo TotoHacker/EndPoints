@@ -32,11 +32,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 #email
-# EMAIL_HOST = 'smtp.googlemail.com'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = config('USER_MAIL')
-# EMAIL_HOST_PASSWORD = config('USER_MAIL_PASSWORD')
-# EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.googlemail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'pruebasendemail134@gmail.com'
+EMAIL_HOST_PASSWORD = 'baqn dkjc vgwr oxdj'
+EMAIL_USE_TLS = True
 
 # Application definition
 

@@ -5,12 +5,44 @@ from django.shortcuts import render
 import xml.etree.ElementTree as ET
 import datetime
 from django.http import JsonResponse
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from django.conf import settings
 
 # Configuración de revisión (hora de inicio y número de veces de revisión al día)
 horaInicioRevision = 1  # Hora en la que comienza la revisión, en formato de 24 horas (ej. 1 = 1 AM)
-minutoInicioRevision = 18  # Minutos a los que comienza la revisión, ej. 20 = 20 minutos después de la hora
+minutoInicioRevision = 43 # Minutos a los que comienza la revisión, ej. 20 = 20 minutos después de la hora
 vecesRevision = 3  # Número de veces que se revisará en el día
 
+
+
+def send_email(subject, body, to_email):
+    try:
+        # Configuración del servidor SMTP de Gmail
+        from_email = settings.EMAIL_HOST_USER  # Deberías asegurarte de que esté configurado en settings.py
+        password = settings.EMAIL_HOST_PASSWORD
+
+        # Crear el mensaje de correo
+        msg = MIMEMultipart()
+        msg['From'] = from_email
+        msg['To'] = to_email
+        msg['Subject'] = subject
+        msg.attach(MIMEText(body, 'plain'))
+
+        # Conectar con el servidor SMTP de Gmail
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()  # Iniciar la conexión TLS para seguridad
+        server.login(from_email, password)
+
+        # Enviar el correo
+        server.sendmail(from_email, to_email, msg.as_string())
+
+        # Cerrar la conexión
+        server.quit()
+        print("Correo enviado exitosamente.")
+    except Exception as e:
+        print(f"Error al enviar el correo: {e}")
 # Función para convertir la hora con minutos decimales (ej. 1.14) a minutos
 def hora_a_minutos(hora, minutos):
     return hora * 60 + minutos
@@ -113,23 +145,32 @@ def check_soap_status(soap_service):
 
 # Vista principal para el estado de los servicios, que revisa solo en las horas de revisión configuradas
 def monitor_services(request):
-    # Hora actual en minutos
     hora_actual = datetime.datetime.now()
     hora_actual_en_minutos = hora_a_minutos(hora_actual.hour, hora_actual.minute)
-    
-    # Calcular las horas de revisión en minutos
     horas_revision_en_minutos = calcular_horas_revision(horaInicioRevision, minutoInicioRevision, vecesRevision)
 
-    # Revisar solo si estamos en la hora configurada
-    if any(abs(hora_actual_en_minutos - revision) <= 5 for revision in horas_revision_en_minutos):  # Permitimos una pequeña tolerancia de 5 minutos
+    website_status = []
+    api_status = []
+    soap_status = []
+
+    if any(abs(hora_actual_en_minutos - revision) <= 5 for revision in horas_revision_en_minutos):
         websites, apis, soap_services = load_services_from_xml()
+
         website_status = [check_service_status(service) for service in websites]
         api_status = [check_service_status(api) for api in apis]
         soap_status = [check_soap_status(soap) for soap in soap_services]
+
+        # Filtrar los servicios caídos
+        sitios_caidos = [service['name'] for service in website_status if service['status'] != 'Operativo']
+        if sitios_caidos:
+            # Crear el cuerpo del correo
+            subject = "Servicios caídos en el monitor"
+            body = "Los siguientes servicios están caídos:\n\n" + "\n".join(sitios_caidos)
+
+            # Enviar el correo
+            send_email(subject, body, 'totochucl@gmail.com')
+
     else:
-        website_status = []
-        api_status = []
-        soap_status = []
         print("No es la hora de revisión, no se realizó ninguna revisión.")
 
     return render(request, 'monitorApp/status_list.html', {
@@ -137,7 +178,6 @@ def monitor_services(request):
         'api_status': api_status,
         'soap_status': soap_status,
     })
-
 # Otras vistas de ejemplo
 def Login(request):
     return render(request, 'monitorApp/Login.html')
