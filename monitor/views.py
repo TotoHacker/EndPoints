@@ -11,8 +11,8 @@ from email.mime.text import MIMEText
 from django.conf import settings
 from email.mime.image import MIMEImage
 # Configuración de revisión (hora de inicio y número de veces de revisión al día)
-horaInicioRevision = 14  # Hora en la que comienza la revisión, en formato de 24 horas (ej. 1 = 1 AM)
-minutoInicioRevision = 22 # Minutos a los que comienza la revisión, ej. 20 = 20 minutos después de la hora
+horaInicioRevision = 13  # Hora en la que comienza la revisión, en formato de 24 horas (ej. 1 = 1 AM)
+minutoInicioRevision = 19 # Minutos a los que comienza la revisión, ej. 20 = 20 minutos después de la hora
 vecesRevision = 3  # Número de veces que se revisará en el día
 
 
@@ -199,7 +199,8 @@ def monitor_services(request):
             # Crear el cuerpo del correo
             subject = "Servicios caídos en el monitor"
             # Enviar el correo con los servicios caídos
-            send_email(subject, sitios_caidos, 'anovelo@thedolphinco.com')
+            # send_email(subject, sitios_caidos, 'anovelo@thedolphinco.com')
+            send_email(subject, sitios_caidos, 'totochucl@gmail.com')
     else:
         print("No es la hora de revisión, no se realizó ninguna revisión.")
         print("Horas de revisión generadas:", horas_revision_en_minutos)

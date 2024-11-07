@@ -9,7 +9,11 @@
     <!-- Additional Sites -->
     <Registro>
         <namesite>Aqua Tours Cancun</namesite>
-        <UrlSite>https://www.aquatsaaourscancun.com/</UrlSite>
+        <UrlSite>https://www.aquatourscancun.com/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>Sitio Prueba Caido</namesite>
+        <UrlSite>https://www.dolphindiscovery.com/xd</UrlSite>
     </Registro>
     <Registro>
         <namesite>Aquaventuras</namesite>

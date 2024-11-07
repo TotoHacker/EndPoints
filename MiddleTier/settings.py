@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv()
 # from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -29,9 +31,15 @@ DEBUG = True
 ALLOWED_HOSTS = []
 EMAIL_HOST = 'smtp.googlemail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'pruebasendemail134@gmail.com'
-EMAIL_HOST_PASSWORD = 'baqn dkjc vgwr oxdj'
+EMAIL_HOST_USER = os.getenv("EMAILUSER", default="")
+EMAIL_HOST_PASSWORD = os.getenv("EMAILPASSWORD",default="")
 EMAIL_USE_TLS = True
+usuario=os.getenv("EMAILUSER", default="")
+passwoe=os.getenv("EMAILPASSWORD",default="")
+usuario = os.getenv("EMAILUSER", default="")
+password = os.getenv("EMAILPASSWORD", default="")
+print("Credenciales usuario:", usuario)
+print("Credenciales contraseña:", password)
 # Application definition
 
 INSTALLED_APPS = [
@@ -87,8 +95,12 @@ WSGI_APPLICATION = 'MiddleTier.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'endpoins',
+        'USER': 'root',
+        'PASSWORD': '1deabrildel2004',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
