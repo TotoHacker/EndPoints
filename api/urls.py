@@ -1,8 +1,11 @@
-from django.urls import path
-from .views import *
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import SysErrorViewSet, UserViewSet
 
-app_name = 'api'
+router = DefaultRouter()
+router.register(r'syserrors', SysErrorViewSet)
+router.register(r'users', UserViewSet)
 
 urlpatterns = [
-    path('v1/post', Post_APIView.as_view()),     
+    path('', include(router.urls)),
 ]

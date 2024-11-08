@@ -1,9 +1,13 @@
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import viewsets
+from .models import SysError, User
+from .serializers import SysErrorSerializer, UserSerializer
 
-    
-class Post_APIView(APIView):    
-    def get(self, request, format=None, *args, **kwargs):
-        return Response([],status=status.HTTP_200_OK)
+# Vista para SysError
+class SysErrorViewSet(viewsets.ModelViewSet):
+    queryset = SysError.objects.all()
+    serializer_class = SysErrorSerializer
+
+# Vista para User
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
