@@ -51,6 +51,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'monitor',
     'compressor',
+    'rest_framework',
+    'api',
+    
 ]
 
 MIDDLEWARE = [

@@ -1,4 +1,4 @@
-create database endpoins;
+/*create database endpoins;
 use endpoins;
 create table SysError(
 id int auto_increment primary key,
@@ -9,4 +9,15 @@ ErrorSiteCode varchar(100)
 alter table SysError
 add dateError date;
 
+Select * from SysError;
+
+Create table User(
+id int auto_increment primary key,
+NameUser varchar(100),
+email varchar (100),
+passwordUser varchar(100)
+);
+*/
+use endpoins;
+select * from User;
 Select * from SysError;
