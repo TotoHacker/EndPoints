@@ -1,86 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard con Gráficas</title>
-    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard DolphinEndpoints</title>
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="bg-gray-200">
+<body class="bg-blue-50">
 
-    <div class="flex">
-        <div class="w-64 bg-white text-black h-screen p-4">
-            <h1 class="text-2xl font-bold mb-6">Dashboard</h1>
-            <ul>
-                <li class="mb-4"><a href="#" class="hover:text-gray-300">Inicio</a></li>
-                <li class="mb-4"><a href="#" class="hover:text-gray-300">Gráficas</a></li>
-                <li class="mb-4"><a href="#" class="hover:text-gray-300">Configuración</a></li>
-                <li class="mb-4"><a href="#" class="hover:text-gray-300">Cerrar Sesión</a></li>
-            </ul>
-        </div>
+  <div class="flex min-h-screen">
 
-        <div class="flex-1 p-6 ">
-            <h2 class="text-3xl font-bold mb-6">Estado General</h2>
-
-            <!-- Gráfica de pastel -->
-            <div class="mb-8 w-56">
-                <h3 class="text-xl font-semibold mb-4">Distribución de Usuarios</h3>
-                <canvas id="pieChart"></canvas>
-            </div>
-
-            <!-- Gráfica de líneas -->
-            <div class="mb-8 w-56">
-                <h3 class="text-xl font-semibold mb-4">Actividad en los Últimos Días</h3>
-                <canvas id="lineChart"></canvas>
-            </div>
-        </div>
+    <!-- Sidebar -->
+    <div class="w-64 bg-white text-black h-full p-6 fixed shadow-lg">
+      <h1 class="text-2xl font-bold mb-8 text-center">DolphinEndpoints</h1>
+      <ul class="space-y-6">
+        <li>
+          <a href="#" class="flex items-center text-lg font-medium hover:text-gray-600">
+            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v14"></path>
+            </svg>
+            Home
+          </a>
+        </li>
+      </ul>
     </div>
 
-    <!-- Scripts para las gráficas de Chart.js -->
-    <script>
-        // Gráfica de pastel
-        const ctxPie = document.getElementById('pieChart').getContext('2d');
-        const pieChart = new Chart(ctxPie, {
-            type: 'pie',
-            data: {
-                labels: ['Activos', 'Inactivos', 'Pendientes'],
-                datasets: [{
-                    label: 'Usuarios',
-                    data: [60, 25, 15],
-                    backgroundColor: ['#4CAF50', '#FFC107', '#F44336'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true
-            }
-        });
+    <!-- Main Content -->
+    <div class="flex-1 ml-64 p-6">
 
-        // Gráfica de líneas
-        const ctxLine = document.getElementById('lineChart').getContext('2d');
-        const lineChart = new Chart(ctxLine, {
-            type: 'line',
-            data: {
-                labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'],
-                datasets: [{
-                    label: 'Visitas al Sitio',
-                    data: [12, 19, 3, 5, 2],
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
+      <!-- Grid of Charts -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        
+        <!-- Status Sites Card -->
+        <div class="bg-white shadow-lg rounded-lg p-6 h-96">
+          <h2 class="text-xl font-bold mb-6 text-gray-800">Status Sites</h2>
+          <canvas id="lineChart" class=""></canvas>
+        </div>
+
+        <!-- Server Status Card -->
+        <div class="flex flex-col items-center bg-white shadow-lg rounded-lg p-6 h-96 ">
+          <h2 class="text-xl font-bold mb-6 text-gray-800">Server Status</h2>
+          <canvas id="polarAreaChart" class=""></canvas>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Gráfica de área polar
+    const ctxPolar = document.getElementById('polarAreaChart').getContext('2d');
+    const polarAreaChart = new Chart(ctxPolar, {
+      type: 'polarArea',
+      data: {
+        labels: ['Activos', 'Inactivos', 'Pendientes'],
+        datasets: [{
+          label: 'Usuarios',
+          data: [60, 25, 15],
+          backgroundColor: ['#4CAF50', '#FFC107', '#F44336'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'right'  // Coloca la leyenda a la derecha
+          }
+        }
+      }
+    });
+
+    // Gráfica de líneas
+    const ctxLine = document.getElementById('lineChart').getContext('2d');
+    const lineChart = new Chart(ctxLine, {
+      type: 'line',
+      data: {
+        labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'],
+        datasets: [{
+          label: 'Visitas al Sitio',
+          data: [12, 19, 3, 5, 2],
+          backgroundColor: 'rgba(54, 162, 235, 0.2)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
 
 </body>
 </html>

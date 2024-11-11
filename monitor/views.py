@@ -10,13 +10,35 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from django.conf import settings
 from email.mime.image import MIMEImage
+from django.shortcuts import render
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import redirect
+
 # Configuración de revisión (hora de inicio y número de veces de revisión al día)
 horaInicioRevision = 13  # Hora en la que comienza la revisión, en formato de 24 horas (ej. 1 = 1 AM)
-minutoInicioRevision = 19 # Minutos a los que comienza la revisión, ej. 20 = 20 minutos después de la hora
+minutoInicioRevision = 41 # Minutos a los que comienza la revisión, ej. 20 = 20 minutos después de la hora
 vecesRevision = 3  # Número de veces que se revisará en el día
 
 
+# Vista para el inicio de sesión
+def login_view(request):
+    if request.method == "POST":
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            # Autenticar y hacer login al usuario
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')  
+            else:
+                form.add_error(None, "Usuario o contraseña incorrectos")
+    else:
+        form = AuthenticationForm()
 
+    return render(request, 'login.html', {'form': form})
 def send_email(subject, body, to_email):
     try:
         # Configuración del servidor SMTP de Gmail
@@ -63,7 +85,7 @@ def send_email(subject, body, to_email):
 
         # Conectar con el servidor SMTP de Gmail
         server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()  # Iniciar la conexión TLS para seguridad
+        server.starttls()  
         server.login(from_email, password)
 
         # Enviar el correo
@@ -151,6 +173,7 @@ def check_service_status(service):
 
         return {
             'name': service['name'],
+            'url': service['url'],
             'status': status,
             'code': response.status_code,
             'response': response.text[:500]
@@ -194,17 +217,45 @@ def monitor_services(request):
         # print(website_status)
 
         # Filtrar los servicios caídos
-        sitios_caidos = [{'name': service['name'], 'url': service.get('url', 'URL no disponible')} for service in website_status if service['status'] != 'Operativo']
+        # Filtrar los servicios caídos y asegurarse de incluir la URL
+        sitios_caidos = [
+            {
+                'name': service['name'], 
+                'code':service['code'],
+                'url': service['url'] if 'url' in service and service['url'] else 'URL no disponible'
+            }
+            for service in website_status 
+            if service['status'] != 'Operativo'
+        ]
+
         if sitios_caidos:
             # Crear el cuerpo del correo
             subject = "Servicios caídos en el monitor"
             # Enviar el correo con los servicios caídos
             # send_email(subject, sitios_caidos, 'anovelo@thedolphinco.com')
             send_email(subject, sitios_caidos, 'totochucl@gmail.com')
+
+            for sitio in sitios_caidos:
+                URL="http://127.0.0.1:8000/api/syserrors/"
+                DATA = {
+                    "site_url": sitio['url'], 
+                    "error_site_code": sitio['code'],  # Ajusta los campos según corresponda
+                    "date_error": datetime.datetime.now().strftime("%Y-%m-%d")
+
+                }
+
+                response = requests.post(URL, json=DATA)
+
+                if response.status_code == 200:
+                    print('Solicitud exitosa')
+                    print('Data:', response.json())
+                else:
+                    print('Error en la solicitud, detalles:', response.text)  
     else:
         print("No es la hora de revisión, no se realizó ninguna revisión.")
         print("Horas de revisión generadas:", horas_revision_en_minutos)
 
+    
     return render(request, 'monitorApp/status_list.html', {
         'website_status': website_status,
         'api_status': api_status,
@@ -215,7 +266,7 @@ def Login(request):
     return render(request, 'monitorApp/Login.html')
 
 def Home(request):
-    return render(request, 'monitorApp/Home.html')
+    return render(request, 'monitorApp/Admin/Home.html')
 
 
  
