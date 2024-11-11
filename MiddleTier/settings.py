@@ -55,7 +55,12 @@ INSTALLED_APPS = [
     'api',
     
 ]
-
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer', 
+    ],
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -101,9 +106,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'endpoins',
         'USER': 'root',
-        'PASSWORD': '1deabrildel2004',
-        'HOST': 'localhost',
-        'PORT': '',
+        'PASSWORD': '1Deabrildel2004',
+        'HOST': '127.0.0.1',
+        'PORT': '3307',
     }
 }
 
