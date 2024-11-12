@@ -97,6 +97,8 @@ STATICFILES_DIRS = [
 print("BASE_DIR:", BASE_DIR)
 WSGI_APPLICATION = 'MiddleTier.wsgi.application'
 
+# settings.py
+LOGIN_URL = '/monitorApp/Login'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -104,11 +106,11 @@ WSGI_APPLICATION = 'MiddleTier.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'endpoins',
-        'USER': 'root',
-        'PASSWORD': '1deabrildel2004',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'NAME': os.getenv("DB_NAME",default=""),
+        'USER': os.getenv("DB_USERNAME",default=""),
+        'PASSWORD': os.getenv("DB_PASSWORD",default=""),
+        'HOST': os.getenv("DB_HOST",default=""),
+        'PORT': os.getenv("DB_PORT", default=""),
     }
 }
 

@@ -11,34 +11,16 @@ from email.mime.text import MIMEText
 from django.conf import settings
 from email.mime.image import MIMEImage
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 
 # Configuración de revisión (hora de inicio y número de veces de revisión al día)
-horaInicioRevision = 13  # Hora en la que comienza la revisión, en formato de 24 horas (ej. 1 = 1 AM)
-minutoInicioRevision = 41 # Minutos a los que comienza la revisión, ej. 20 = 20 minutos después de la hora
+horaInicioRevision = 11  # Hora en la que comienza la revisión, en formato de 24 horas (ej. 1 = 1 AM)
+minutoInicioRevision = 54 # Minutos a los que comienza la revisión, ej. 20 = 20 minutos después de la hora
 vecesRevision = 3  # Número de veces que se revisará en el día
 
 
 # Vista para el inicio de sesión
-def login_view(request):
-    if request.method == "POST":
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            # Autenticar y hacer login al usuario
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('home')  
-            else:
-                form.add_error(None, "Usuario o contraseña incorrectos")
-    else:
-        form = AuthenticationForm()
 
-    return render(request, 'login.html', {'form': form})
 def send_email(subject, body, to_email):
     try:
         # Configuración del servidor SMTP de Gmail
@@ -216,7 +198,7 @@ def monitor_services(request):
         soap_status = [check_soap_status(soap) for soap in soap_services]
         # print(website_status)
 
-        # Filtrar los servicios caídos
+
         # Filtrar los servicios caídos y asegurarse de incluir la URL
         sitios_caidos = [
             {
@@ -232,8 +214,8 @@ def monitor_services(request):
             # Crear el cuerpo del correo
             subject = "Servicios caídos en el monitor"
             # Enviar el correo con los servicios caídos
-            # send_email(subject, sitios_caidos, 'anovelo@thedolphinco.com')
-            send_email(subject, sitios_caidos, 'totochucl@gmail.com')
+            send_email(subject, sitios_caidos, 'anovelo@thedolphinco.com')
+            # send_email(subject, sitios_caidos, 'totochucl@gmail.com')
 
             for sitio in sitios_caidos:
                 URL="http://127.0.0.1:8000/api/syserrors/"
@@ -264,7 +246,7 @@ def monitor_services(request):
 # Otras vistas de ejemplo
 def Login(request):
     return render(request, 'monitorApp/Login.html')
-
+@login_required
 def Home(request):
     return render(request, 'monitorApp/Admin/Home.html')
 

@@ -19,5 +19,5 @@ passwordUser varchar(100)
 );
 */
 use endpoins;
-select * from User;
-Select * from SysError;
+select * from Api_User;
+Select * from Api_SysError, Api_User;
