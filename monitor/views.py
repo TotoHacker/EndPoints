@@ -246,9 +246,10 @@ def monitor_services(request):
 # Otras vistas de ejemplo
 def Login(request):
     return render(request, 'monitorApp/Login.html')
-@login_required
+
 def Home(request):
     return render(request, 'monitorApp/Admin/Home.html')
 
-
+def CrudU(request):
+    return render(request,'monitorApp/Admin/Crud.html')
  

@@ -14,6 +14,7 @@ urlpatterns = [
     path('monitorApp/Login', views.Login, name='Login'),
     #solo si el usuario esta logeado puede ver
     path('monitorApp/home', views.Home, name='home'),
+    path('monitorApp/Crud', views.CrudU, name='Crud'),
     path('', lambda request: HttpResponseRedirect('/monitorApp/')),
 ]
 
