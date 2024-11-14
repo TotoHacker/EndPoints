@@ -1,6 +1,6 @@
 from django.urls import path, include
 from django.contrib import admin
-from monitor import views
+from MiddleTier import views
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.conf.urls.static import static
@@ -16,6 +16,7 @@ urlpatterns = [
     path('monitorApp/home', views.Home, name='home'),
     path('monitorApp/Crud', views.CrudU, name='Crud'),
     path('', lambda request: HttpResponseRedirect('/monitorApp/')),
+    
 ]
 
 if settings.DEBUG:

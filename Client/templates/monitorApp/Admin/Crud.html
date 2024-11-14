@@ -1,125 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard DolphinEndpoints</title>
   <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-gray-100 font-sans text-gray-800">
+
+  <!-- Navbar -->
+  <header class="bg-white shadow-sm fixed w-full z-10">
+    <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+      <h1 class="text-2xl font-semibold text-gray-900">DolphinEndpoints</h1>
+      <button id="sidebarToggle" class="lg:hidden px-4 py-2 text-gray-900">
+        <!-- Icon for Hamburger Menu -->
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <div id="sidebar" class="fixed inset-y-0 left-0 bg-white w-64 shadow-lg pt-16 md:w-20 lg:w-64 md:fixed md:top-0 md:left-0 lg:left-0 lg:pt-16 transition-all duration-300 hidden lg:block">
+    <nav class="space-y-4">
+      <a href="/monitorApp/home" class="block px-6 py-3 text-lg font-medium text-gray-700 hover:bg-gray-200 rounded transition">Home</a>
+      <a href="/monitorApp/Crud" class="block px-6 py-3 text-lg font-medium text-gray-700 hover:bg-gray-200 rounded transition">Crud Users</a>
+      <a href="/monitorApp/errors" class="block px-6 py-3 text-lg font-medium text-gray-700 hover:bg-gray-200 rounded transition">Crud Errors</a>
+      <a href="/monitorApp/settings" class="block px-6 py-3 text-lg font-medium text-gray-700 hover:bg-gray-200 rounded transition">Settings Monitor</a>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <main id="mainContent" class="ml-0 pt-20 px-4 md:ml-20 lg:ml-64 transition-all duration-300">
+    <button>Crear usuario</button> <!--Ester debe ser un modal tambien-->
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" class="px-6 py-3">Name</th>
+            <th scope="col" class="px-6 py-3">Email</th>
+            <th scope="col" class="px-6 py-3">Role</th>
+            <th scope="col" class="px-6 py-3">Status</th>
+            <th scope="col" class="px-6 py-3">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              John Doe
+            </th>
+            <td class="px-6 py-4">john.doe@example.com</td>
+            <td class="px-6 py-4">Admin</td>
+            <td class="px-6 py-4">Active</td>
+            <td class="px-6 py-4 flex">
+              <button href="#" onclick="toggleModal('edit-modal')" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-6 m-3">Edit</button>
+              <button onclick="toggleModal('popup-modal')" class="block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-6 m-3">
+                Delete
+              </button>
+            </td>
+          </tr>
+          <!-- More rows if needed -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Modal for Delete Confirmation -->
+  <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-gray-800 bg-opacity-50">
+    <div class="relative p-6 w-full max-w-md bg-white rounded-lg shadow-lg">
+      <button type="button" class="absolute top-3 right-3 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center" onclick="toggleModal('popup-modal')">
+        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+        </svg>
+        <span class="sr-only">Close modal</span>
+      </button>
+      <div class="text-center">
+        <svg class="mx-auto mb-4 text-gray-400 w-12 h-12" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+        </svg>
+        <h3 class="mb-5 text-lg font-normal text-gray-500">Are you sure you want to delete this user?</h3>
+        <button onclick="toggleModal('popup-modal')" type="button" class="text-white bg-red-600 hover:bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5">Yes, I'm sure</button>
+        <button onclick="toggleModal('popup-modal')" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100">No, cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Edit -->
+  <div id="edit-modal" tabindex="-1" class="hidden overflow-y-auto fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-gray-800 bg-opacity-50">
+    <div class="relative p-6 w-full max-w-md bg-white rounded-lg shadow-lg">
+      <button type="button" class="absolute top-3 right-3 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center" onclick="toggleModal('edit-modal')">
+        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+        </svg>
+        <span class="sr-only">Close modal</span>
+      </button>
+      <h3 class="text-lg font-medium text-gray-900">Edit User</h3>
+      <form>
+        <div class="mt-4">
+          <label for="user-name" class="block text-sm font-medium text-gray-700">User Name</label>
+          <input type="text" id="user-name" name="user-name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md" placeholder="Enter user name">
+        </div>
+        <div class="mt-4">
+          <label for="user-email" class="block text-sm font-medium text-gray-700">Email</label>
+          <input type="email" id="user-email" name="user-email" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md" placeholder="Enter user email">
+        </div>
+        <div class="mt-6 flex justify-end">
+          <button type="button" onclick="toggleModal('edit-modal')" class="py-2 px-6 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-md">Cancel</button>
+          <button type="submit" class="py-2 px-6 text-sm font-medium text-white bg-blue-600 rounded-md ms-4">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
-    // Script para abrir y cerrar los modales
     function toggleModal(modalId) {
       const modal = document.getElementById(modalId);
       modal.classList.toggle('hidden');
     }
+
+    document.getElementById('sidebarToggle').addEventListener('click', function () {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('hidden');
+      document.getElementById('mainContent').classList.toggle('ml-0');
+    });
   </script>
-</head>
-<body class="bg-gray-50">
-
-  <div class="flex flex-col min-h-screen">
-
-    <!-- Sidebar -->
-    <div class="bg-white h-16 w-full shadow-md">
-      <h1 class="text-2xl font-bold px-10 py-4 text-blue-600">DolphinEndpoints</h1>
-    </div>
-
-    <div class="w-64 bg-white text-black h-full p-6 fixed shadow-lg">
-      <ul class="space-y-6 my-5">
-        <!-- Agregar más enlaces si es necesario -->
-        <li>
-          <a href="/monitorApp/home" class="flex items-center text-lg font-medium hover:text-gray-600 p-2 rounded-lg hover:bg-blue-100">
-            Home
-          </a>
-          <a href="/monitorApp/Crud" class="flex items-center text-lg font-medium hover:text-gray-600 p-2 rounded-lg hover:bg-blue-100">
-            Crud Users
-          </a>
-          <a href="/monitorApp/home" class="flex items-center text-lg font-medium hover:text-gray-600 p-2 rounded-lg hover:bg-blue-100">
-            Crud errors
-          </a>
-          <a href="/monitorApp/home" class="flex items-center text-lg font-medium hover:text-gray-600 p-2 rounded-lg hover:bg-blue-100">
-            Settings Monitor
-          </a>
-        </li>
-      </ul>
-    </div>
-
-    <!-- Main Content -->
-    <div class="flex-1 ml-64 p-6">
-      
-      
-      <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" class="px-6 py-3">Product name</th>
-              <th scope="col" class="px-6 py-3">Color</th>
-              <th scope="col" class="px-6 py-3">Category</th>
-              <th scope="col" class="px-6 py-3">Price</th>
-              <th scope="col" class="px-6 py-3">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-              <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                Apple MacBook Pro 17"
-              </th>
-              <td class="px-6 py-4">Silver</td>
-              <td class="px-6 py-4">Laptop</td>
-              <td class="px-6 py-4">$2999</td>
-              <td class="px-6 py-4 flex">
-                <button href="#" onclick="toggleModal('edit-modal')" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-6 m-3">Edit</button>
-                <button onclick="toggleModal('popup-modal')" class="block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-6 m-3">
-                    Eliminar
-                  </button>
-              </td>
-            </tr>
-            <!-- Más filas si es necesario -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Modal para confirmación de eliminación -->
-    <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-gray-800 bg-opacity-50">
-      <div class="relative p-6 w-full max-w-md bg-white rounded-lg shadow-lg">
-        <button type="button" class="absolute top-3 right-3 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center" onclick="toggleModal('popup-modal')">
-          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-          </svg>
-          <span class="sr-only">Close modal</span>
-        </button>
-        <div class="text-center">
-          <svg class="mx-auto mb-4 text-gray-400 w-12 h-12" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-          </svg>
-          <h3 class="mb-5 text-lg font-normal text-gray-500">Are you sure you want to delete this product?</h3>
-          <button onclick="toggleModal('popup-modal')" type="button" class="text-white bg-red-600 hover:bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5">Yes, I'm sure</button>
-          <button onclick="toggleModal('popup-modal')" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100">No, cancel</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal de edición -->
-    <div id="edit-modal" tabindex="-1" class="hidden overflow-y-auto fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-gray-800 bg-opacity-50">
-      <div class="relative p-6 w-full max-w-md bg-white rounded-lg shadow-lg">
-        <button type="button" class="absolute top-3 right-3 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center" onclick="toggleModal('edit-modal')">
-          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-          </svg>
-          <span class="sr-only">Close modal</span>
-        </button>
-        <div class="text-center">
-          <h3 class="mb-5 text-lg font-normal text-gray-500">Edit Product</h3>
-          <form>
-            <input type="text" class="w-full p-2 mb-4 text-center border border-gray-300 rounded-lg" placeholder="Enter product name" />
-            <input type="text" class="w-full p-2 mb-4 text-center border border-gray-300 rounded-lg" placeholder="Enter product description" />
-            <button type="submit" class="text-white bg-blue-600 hover:bg-blue-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5">Save Changes</button>
-          </form>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
 </body>
+
 </html>

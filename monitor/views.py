@@ -1,21 +1,17 @@
 import os
 import requests
 from django.conf import settings
-from django.shortcuts import render
 import xml.etree.ElementTree as ET
-import datetime
-from django.http import JsonResponse
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from django.conf import settings
 from email.mime.image import MIMEImage
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+
 
 # Configuración de revisión (hora de inicio y número de veces de revisión al día)
 horaInicioRevision = 11  # Hora en la que comienza la revisión, en formato de 24 horas (ej. 1 = 1 AM)
-minutoInicioRevision = 54 # Minutos a los que comienza la revisión, ej. 20 = 20 minutos después de la hora
+minutoInicioRevision = 29 # Minutos a los que comienza la revisión, ej. 20 = 20 minutos después de la hora
 vecesRevision = 3  # Número de veces que se revisará en el día
 
 
@@ -178,78 +174,4 @@ def check_soap_status(soap_service):
     except requests.exceptions.RequestException as e:
         print(f"Error checking SOAP service {soap_service['name']}: {e}")
         return {'name': soap_service['name'], 'status': 'Caído', 'code': 'N/A'}
-
-# Vista principal para el estado de los servicios, que revisa solo en las horas de revisión configuradas
-def monitor_services(request):
-    hora_actual = datetime.datetime.now()
-    hora_actual_en_minutos = hora_a_minutos(hora_actual.hour, hora_actual.minute)
-    horas_revision_en_minutos = calcular_horas_revision(horaInicioRevision, minutoInicioRevision, vecesRevision)
-
-    website_status = []
-    api_status = []
-    soap_status = []
-
-    # Compara si la hora actual está en las horas de revisión programadas
-    if hora_actual_en_minutos in horas_revision_en_minutos:
-        websites, apis, soap_services = load_services_from_xml()
-
-        website_status = [check_service_status(service) for service in websites]
-        api_status = [check_service_status(api) for api in apis]
-        soap_status = [check_soap_status(soap) for soap in soap_services]
-        # print(website_status)
-
-
-        # Filtrar los servicios caídos y asegurarse de incluir la URL
-        sitios_caidos = [
-            {
-                'name': service['name'], 
-                'code':service['code'],
-                'url': service['url'] if 'url' in service and service['url'] else 'URL no disponible'
-            }
-            for service in website_status 
-            if service['status'] != 'Operativo'
-        ]
-
-        if sitios_caidos:
-            # Crear el cuerpo del correo
-            subject = "Servicios caídos en el monitor"
-            # Enviar el correo con los servicios caídos
-            send_email(subject, sitios_caidos, 'anovelo@thedolphinco.com')
-            # send_email(subject, sitios_caidos, 'totochucl@gmail.com')
-
-            for sitio in sitios_caidos:
-                URL="http://127.0.0.1:8000/api/syserrors/"
-                DATA = {
-                    "site_url": sitio['url'], 
-                    "error_site_code": sitio['code'],  # Ajusta los campos según corresponda
-                    "date_error": datetime.datetime.now().strftime("%Y-%m-%d")
-
-                }
-
-                response = requests.post(URL, json=DATA)
-
-                if response.status_code == 200:
-                    print('Solicitud exitosa')
-                    print('Data:', response.json())
-                else:
-                    print('Error en la solicitud, detalles:', response.text)  
-    else:
-        print("No es la hora de revisión, no se realizó ninguna revisión.")
-        print("Horas de revisión generadas:", horas_revision_en_minutos)
-
     
-    return render(request, 'monitorApp/status_list.html', {
-        'website_status': website_status,
-        'api_status': api_status,
-        'soap_status': soap_status,
-    })
-# Otras vistas de ejemplo
-def Login(request):
-    return render(request, 'monitorApp/Login.html')
-
-def Home(request):
-    return render(request, 'monitorApp/Admin/Home.html')
-
-def CrudU(request):
-    return render(request,'monitorApp/Admin/Crud.html')
- 

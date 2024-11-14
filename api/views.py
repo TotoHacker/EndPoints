@@ -4,8 +4,6 @@ from .serializers import SysErrorSerializer, UserSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth.hashers import check_password
-from rest_framework import status
-from django.shortcuts import redirect
 from django.shortcuts import render
 
 # Vista para SysError
@@ -31,10 +29,7 @@ class LoginView(APIView):
             if check_password(password, user.password_user):
                 return render(request, 'monitorApp/Admin/Home.html')
             else:
-                return Response({"error": "Credenciales inválidas"}, status=status.HTTP_401_UNAUTHORIZED)
+                return Response({"error": "Credenciales inválidas"})
         except User.DoesNotExist:
-            return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "Usuario no encontrado"})
         
-
-
-

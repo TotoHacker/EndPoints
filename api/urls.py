@@ -4,6 +4,7 @@ from .views import SysErrorViewSet, UserViewSet, LoginView
 
 router = DefaultRouter()
 router.register(r'syserrors', SysErrorViewSet)
+
 router.register(r'users', UserViewSet)
 
 urlpatterns = [
