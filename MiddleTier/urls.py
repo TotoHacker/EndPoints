@@ -11,12 +11,12 @@ urlpatterns = [
     path('api/', include('api.urls')),
     #Others Views
     path('monitorApp/', views.monitor_services, name='monitor_services'),
-    path('monitorApp/Login', views.Login, name='Login'),
+    path('Login', views.Login, name='Login'),
     #solo si el usuario esta logeado puede ver
-    path('monitorApp/home', views.Home, name='home'),
-    path('monitorApp/Crud', views.CrudU, name='Crud'),
-    path('', lambda request: HttpResponseRedirect('/monitorApp/')),
-    
+    path('Home', views.Home, name='home'),
+    path('CrudErrors', views.CrudE, name='CrudErrors'),
+    path('CrudUser', views.CrudU, name='Crud'),
+    path('', lambda request: HttpResponseRedirect('/Login')),
 ]
 
 if settings.DEBUG:

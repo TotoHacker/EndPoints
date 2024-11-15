@@ -37,29 +37,34 @@
 
   <!-- Main Content -->
   <main id="mainContent" class="ml-0 pt-20 px-4 md:ml-20 lg:ml-64 transition-all duration-300">
-    <button>Crear usuario</button> <!-- Este debe ser un modal también -->
+    <button>Crear usuario</button> <!--Ester debe ser un modal tambien-->
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" class="px-6 py-3">Name</th>
             <th scope="col" class="px-6 py-3">Email</th>
+            <th scope="col" class="px-6 py-3">Role</th>
+            <th scope="col" class="px-6 py-3">Status</th>
             <th scope="col" class="px-6 py-3">Action</th>
           </tr>
         </thead>
         <tbody>
-          {% for user in users_data %}
-          <tr class="bg-white border-b">
-            <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-              {{ user.name_user }}
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              John Doe
             </th>
-            <td class="px-6 py-4">{{ user.email}}</td>
+            <td class="px-6 py-4">john.doe@example.com</td>
+            <td class="px-6 py-4">Admin</td>
+            <td class="px-6 py-4">Active</td>
             <td class="px-6 py-4 flex">
-              <button onclick="toggleModal('edit-modal')" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 m-2">Edit</button>
-              <button onclick="toggleModal('popup-modal')" class="text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5 m-2">Delete</button>
+              <button href="#" onclick="toggleModal('edit-modal')" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-6 m-3">Edit</button>
+              <button onclick="toggleModal('popup-modal')" class="block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-6 m-3">
+                Delete
+              </button>
             </td>
           </tr>
-          {% endfor %}
+          <!-- More rows if needed -->
         </tbody>
       </table>
     </div>
@@ -98,14 +103,15 @@
       <form>
         <div class="mt-4">
           <label for="user-name" class="block text-sm font-medium text-gray-700">User Name</label>
-          <input type="text" id="user-name" name="user-name" class="mt-1 p-2 w-full border border-gray-300 rounded-lg">
+          <input type="text" id="user-name" name="user-name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md" placeholder="Enter user name">
         </div>
         <div class="mt-4">
           <label for="user-email" class="block text-sm font-medium text-gray-700">Email</label>
-          <input type="email" id="user-email" name="user-email" class="mt-1 p-2 w-full border border-gray-300 rounded-lg">
+          <input type="email" id="user-email" name="user-email" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md" placeholder="Enter user email">
         </div>
-        <div class="mt-4 text-right">
-          <button type="submit" class="text-white bg-blue-600 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5">Save Changes</button>
+        <div class="mt-6 flex justify-end">
+          <button type="button" onclick="toggleModal('edit-modal')" class="py-2 px-6 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-md">Cancel</button>
+          <button type="submit" class="py-2 px-6 text-sm font-medium text-white bg-blue-600 rounded-md ms-4">Save</button>
         </div>
       </form>
     </div>
@@ -113,10 +119,16 @@
 
   <script>
     function toggleModal(modalId) {
-      document.getElementById(modalId).classList.toggle('hidden');
+      const modal = document.getElementById(modalId);
+      modal.classList.toggle('hidden');
     }
-  </script>
 
+    document.getElementById('sidebarToggle').addEventListener('click', function () {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('hidden');
+      document.getElementById('mainContent').classList.toggle('ml-0');
+    });
+  </script>
 </body>
 
 </html>
