@@ -9,10 +9,38 @@ from django.conf import settings
 from email.mime.image import MIMEImage
 
 
-# Configuración de revisión (hora de inicio y número de veces de revisión al día)
-horaInicioRevision = 11  # Hora en la que comienza la revisión, en formato de 24 horas (ej. 1 = 1 AM)
-minutoInicioRevision = 29 # Minutos a los que comienza la revisión, ej. 20 = 20 minutos después de la hora
-vecesRevision = 3  # Número de veces que se revisará en el día
+def Checktime(request):
+    URL = "http://127.0.0.1:8000/api/Settings/"
+    response = requests.get(URL)
+    
+    if response.status_code == 200:
+        data = response.json()
+        print('Respuesta de la API:', data)
+        print('Tipo de respuesta:', type(data))  # Esto te dirá si es una lista o un diccionario
+        
+        if isinstance(data, list):
+            # Si es una lista, puedes acceder a los elementos por su índice
+            # Por ejemplo, accede al primer elemento de la lista
+            data = data[0]  # Si solo necesitas el primer elemento de la lista
+            print('Primer elemento de la lista:', data)
+        
+        horaInicioRevision = data['hour']
+        minutoInicioRevision = data['minutes']
+        vecesRevision = data['timesReview']
+        print('Configuraciones: Hora de inicio:', horaInicioRevision, 'Minutos:', minutoInicioRevision, 'Veces de revisión:', vecesRevision)
+    else:
+        print('Error en la solicitud, detalles:', response.text)
+
+    return {
+        'horaInicioRevision': horaInicioRevision,
+        'minutoInicioRevision': minutoInicioRevision,
+        'vecesRevision': vecesRevision
+    }
+
+# horaInicioRevision = 11 
+# minutoInicioRevision = 29 
+# vecesRevision = 3  
+
 
 
 # Vista para el inicio de sesión

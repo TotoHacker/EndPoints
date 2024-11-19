@@ -16,6 +16,8 @@ urlpatterns = [
     path('Home', views.Home, name='home'),
     path('CrudErrors', views.CrudE, name='CrudErrors'),
     path('CrudUser', views.CrudU, name='Crud'),
+    path("SettingMonitor", views.SettingsMonitor, name="Settings"),
+    # path("/CreateUser", views.CreateUser, name="CreateUser")
     path('', lambda request: HttpResponseRedirect('/Login')),
 ]
 

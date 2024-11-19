@@ -19,3 +19,10 @@ class User(models.Model):
 
     def __str__(self):
         return self.name_user
+from django.db import models
+
+class SettingsMonitor(models.Model):
+    hour = models.IntegerField()  
+    minutes = models.IntegerField()  
+    timesReview= models.IntegerField()  
+
