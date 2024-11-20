@@ -1,14 +1,14 @@
 import requests
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from monitor.views import (
     load_services_from_xml, check_service_status, 
     check_soap_status, send_email, hora_a_minutos,
     calcular_horas_revision, Checktime
 )
-
 import datetime
-
+from api.models import User
 # Vista principal para monitorear los servicios
 def monitor_services(request):
     time_settings = Checktime(request)
@@ -87,24 +87,38 @@ def CreateUser(request):
 def Login(request):
     return render(request, 'monitorApp/Login.html')
 
+#edit user
+
+
 def Home(request):
     return render(request, 'monitorApp/Admin/Home.html')
 
+
 def CrudU(request):
+    # Obtener todos los usuarios desde la API
     URL = "http://127.0.0.1:8000/api/users/"
     response = requests.get(URL)
     users_data = []
 
     if response.status_code == 200:
         users_data = response.json()
-        print('Solicitud exitosa')
-        # print('Data:', users_data)
     else:
         print('Error en la solicitud, detalles:', response.text)
 
-    # print('Usuarios:', users_data)
-    return render(request, 'monitorApp/Admin/Crud.html', {'users_data': users_data})
+    # Manejo de la edición de usuario
+    if request.method == 'POST' and 'user-id' in request.POST:
+        user_id = request.POST.get('user-id')
+        user = get_object_or_404(User, id=user_id)
 
+        # Actualizar campos del usuario
+        user.name_user = request.POST.get('user-name', user.name_user)
+        user.email = request.POST.get('user-email', user.email)
+        user.save()
+
+        # Redirigir para evitar reenvío de formulario
+        return redirect('Crud')  
+
+    return render(request, 'monitorApp/Admin/Crud.html', {'users_data': users_data})
 def CrudE(request):
     URLE = "http://127.0.0.1:8000/api/syserrors/"
     response = requests.get(URLE)
@@ -112,24 +126,48 @@ def CrudE(request):
 
     if response.status_code == 200:
         Error_data = response.json()
-        print('Solicitud exitosa')
-        # print('Data:', Error_data)
     else:
         print('Error en la solicitud, detalles:', response.text)
 
-    # print('Errores:', Error_data)
-    return render(request, 'monitorApp/Admin/CrudErrors.html',{'Errors_data':Error_data})
+    # Manejo de eliminación
+    if request.method == 'POST' and 'error-id' in request.POST:
+        error_id = request.POST.get('error-id')
+        delete_url = f"{URLE}{error_id}/"  # Asumiendo que la API acepta DELETE en esta URL
+        delete_response = requests.delete(delete_url)
+        if delete_response.status_code == 200:
+            print(f"Error {error_id} eliminado correctamente.")
+             
+        else:
+            print(f"Error al eliminar el error {error_id}: {delete_response.text}")
+        return redirect('CrudErrors') 
+    return render(request, 'monitorApp/Admin/CrudErrors.html', {'Errors_data': Error_data})
+
 def SettingsMonitor(request):
     URLS = "http://127.0.0.1:8000/api/Settings/"
-    response = requests.get(URLS)
-    data = []  # Inicializamos 'data' correctamente como lista vacía
+    data = []  # Inicializamos la variable 'data' como lista vacía
 
+    # Solicitud GET para obtener los datos
+    response = requests.get(URLS)
     if response.status_code == 200:
-        data = response.json()  # Asignamos los datos a 'data'
+        data = response.json()
         print('Solicitud exitosa')
-        # print('Data:', data)  # Puedes imprimir para depuración si es necesario
     else:
         print('Error en la solicitud, detalles:', response.text)
-    print('Setting:', data)
-    # Ahora pasamos 'data' al template, que contiene la respuesta de la API
+
+    # Actualización de datos con PUT
+    if request.method == "POST":
+        monitor_id = 1  
+        updated_data = {
+            "hour": request.POST.get('hour', ''),
+            "minutes": request.POST.get('minutes', ''),
+            "timesReview": request.POST.get('timesReview', '')
+        }
+        # Construir la URL dinámica para el monitor específico
+        url_put = f"http://127.0.0.1:8000/api/Settings/{monitor_id}/"
+        response = requests.put(url_put, json=updated_data)
+        if response.status_code == 200:
+            print('Post actualizado de forma exitosa')
+        else:
+            print('Error en la solicitud PUT, detalles:', response.text)
+        return redirect('CrudErrors') 
     return render(request, 'monitorApp/Admin/SettingsMonitor.html', {'settingsConf': data})

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.hashers import make_password
-
+from django.utils.timezone import now
 class SysError(models.Model):
     site_url = models.CharField(max_length=100)
     error_site_code = models.CharField(max_length=100)
@@ -19,10 +19,14 @@ class User(models.Model):
 
     def __str__(self):
         return self.name_user
-from django.db import models
 
 class SettingsMonitor(models.Model):
-    hour = models.IntegerField()  
-    minutes = models.IntegerField()  
-    timesReview= models.IntegerField()  
+      #esta debe ser fecha y hora de y inicio , luego cada cuantas horas y minutos por separado checara el sistema
+    #ejemplo, fecha de inicio 20/11/2024 hora 13:30 pm, checara el sistema cada horas=2 minutos=20 //en formato 24hrs
+    start_datetime = models.DateTimeField(default=now)  # Fecha y hora de inicio
+    interval_hours = models.IntegerField(default=0)  # Intervalo de horas
+    interval_minutes = models.IntegerField(default=0)  # Intervalo de minutos
+
+    def __str__(self):
+        return f"Inicio: {self.start_datetime}, Intervalo: {self.interval_hours} horas y {self.interval_minutes} minutos"
 
