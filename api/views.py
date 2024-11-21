@@ -33,7 +33,7 @@ class LoginView(APIView):
             user = User.objects.get(email=email)
             # Verificar si la contraseña proporcionada coincide
             if check_password(password, user.password_user):
-                return render(request, 'monitorApp/Admin/Home.html')  # Cambia esto según tus necesidades
+                return render(request, 'monitorApp/Admin/Home.html') 
             else:
                 return Response({"error": "Credenciales inválidas"})
         except User.DoesNotExist:

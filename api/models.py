@@ -11,6 +11,7 @@ class SysError(models.Model):
 class User(models.Model):
     name_user = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, unique=True)  
+    Permissions= models.IntegerField()
     password_user = models.CharField(max_length=100)
 
     def save(self, *args, **kwargs):
@@ -21,8 +22,7 @@ class User(models.Model):
         return self.name_user
 
 class SettingsMonitor(models.Model):
-      #esta debe ser fecha y hora de y inicio , luego cada cuantas horas y minutos por separado checara el sistema
-    #ejemplo, fecha de inicio 20/11/2024 hora 13:30 pm, checara el sistema cada horas=2 minutos=20 //en formato 24hrs
+    
     start_datetime = models.DateTimeField(default=now)  # Fecha y hora de inicio
     interval_hours = models.IntegerField(default=0)  # Intervalo de horas
     interval_minutes = models.IntegerField(default=0)  # Intervalo de minutos

@@ -37,22 +37,19 @@
   <main id="mainContent" class="ml-0 pt-20 px-4 md:ml-20 lg:ml-64 transition-all duration-300">
     <div class="bg-white w-full h-auto p-6 rounded-lg shadow-lg">
       <h1 class="text-3xl font-semibold text-gray-900 mb-6">Config Monitor</h1>
-      <h1 class="text-2xl font-semibold text-gray-900 mb-6">Hour Start</h1>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="bg-white border-gray-600 flex flex-col p-4 rounded-lg shadow-md">
-          <h2 class="text-lg font-medium text-gray-700">Hora</h2>
-          <h2 class="text-lg font-medium text-gray-700">Minutos</h2>
-          <h2 class="text-lg font-medium text-gray-700">Veces de repetición</h2>
-        </div>
-        <div class="bg-white border-gray-600 flex flex-col p-4 rounded-lg shadow-md">
+          <h2 class="text-lg font-medium text-gray-700">Configuración Actual</h2>
           {% for monitor in settingsConf %}
             <div class="mb-4">
-              <h3 class="text-xl font-semibold text-gray-800">{{ monitor.hour }} Hours</h3>
-              <p class="text-gray-600">{{ monitor.minutes }} Minutes</p>
-              <p class="text-gray-600">{{ monitor.timesReview }} veces</p>
+              <h3 class="text-xl font-semibold text-gray-800">Fecha de Inicio</h3>
+              <p class="text-gray-600">{{ monitor.start_datetime }}</p>
+              <h3 class="text-xl font-semibold text-gray-800 mt-4">Intervalo</h3>
+              <p class="text-gray-600">{{ monitor.interval_hours }} Horas</p>
+              <p class="text-gray-600">{{ monitor.interval_minutes }} Minutos</p>
               <div class="flex mt-4">
                 <button 
-                  onclick="openEditModal('{{ monitor.id }}', '{{ monitor.hour }}', '{{ monitor.minutes }}', '{{ monitor.timesReview }}')" 
+                  onclick="openEditModal('{{ monitor.id }}', '{{ monitor.start_datetime }}', '{{ monitor.interval_hours }}', '{{ monitor.interval_minutes }}')" 
                   class="text-white bg-blue-600 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 m-2">
                   Edit
                 </button>
@@ -78,16 +75,17 @@
         {% csrf_token %}
         <input type="hidden" id="monitor-id" name="id">
         <div class="mt-4">
-          <label for="hour" class="block text-sm font-medium text-gray-700">Hora</label>
-          <input type="text" id="hour" name="hour" class="mt-1 p-2 w-full border border-gray-300 rounded-lg">
+          <label for="start_datetime" class="block text-sm font-medium text-gray-700">Fecha y hora de Inicio</label>
+          <input type="datetime-local" id="start_datetime" name="start_datetime" class="mt-1 p-2 w-full border border-gray-300 rounded-lg">
+        </div>
+        
+        <div class="mt-4">
+          <label for="interval_hours" class="block text-sm font-medium text-gray-700">Horas</label>
+          <input type="text" id="interval_hours" name="interval_hours" class="mt-1 p-2 w-full border border-gray-300 rounded-lg">
         </div>
         <div class="mt-4">
-          <label for="minutes" class="block text-sm font-medium text-gray-700">Minutos</label>
-          <input type="text" id="minutes" name="minutes" class="mt-1 p-2 w-full border border-gray-300 rounded-lg">
-        </div>
-        <div class="mt-4">
-          <label for="timesReview" class="block text-sm font-medium text-gray-700">Veces de Repetición</label>
-          <input type="text" id="timesReview" name="timesReview" class="mt-1 p-2 w-full border border-gray-300 rounded-lg">
+          <label for="interval_minutes" class="block text-sm font-medium text-gray-700">Minutos</label>
+          <input type="text" id="interval_minutes" name="interval_minutes" class="mt-1 p-2 w-full border border-gray-300 rounded-lg">
         </div>
         <div class="flex justify-end mt-6">
           <button type="submit" class="px-6 py-2 text-white bg-blue-600 rounded-lg">Save</button>
@@ -102,11 +100,11 @@
       modal.classList.toggle("hidden");
     }
 
-    function openEditModal(id, hour, minutes, timesReview) {
+    function openEditModal(id, start_datetime, interval_hours, interval_minutes) {
       document.getElementById("monitor-id").value = id;
-      document.getElementById("hour").value = hour;
-      document.getElementById("minutes").value = minutes;
-      document.getElementById("timesReview").value = timesReview;
+      document.getElementById("start_datetime").value = start_datetime;
+      document.getElementById("interval_hours").value = interval_hours;
+      document.getElementById("interval_minutes").value = interval_minutes;
       toggleModal("edit-modal");
     }
 

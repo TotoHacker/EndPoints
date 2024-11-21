@@ -7,41 +7,50 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from django.conf import settings
 from email.mime.image import MIMEImage
+from datetime import datetime, timedelta
 
 
-def Checktime(request):
+def Checktime():
     URL = "http://127.0.0.1:8000/api/Settings/"
     response = requests.get(URL)
     
     if response.status_code == 200:
         data = response.json()
         print('Respuesta de la API:', data)
-        print('Tipo de respuesta:', type(data))  # Esto te dirá si es una lista o un diccionario
+        print('Tipo de respuesta:', type(data))  
         
         if isinstance(data, list):
-            # Si es una lista, puedes acceder a los elementos por su índice
-            # Por ejemplo, accede al primer elemento de la lista
-            data = data[0]  # Si solo necesitas el primer elemento de la lista
+            data = data[0]  
             print('Primer elemento de la lista:', data)
         
-        horaInicioRevision = data['hour']
-        minutoInicioRevision = data['minutes']
-        vecesRevision = data['timesReview']
-        print('Configuraciones: Hora de inicio:', horaInicioRevision, 'Minutos:', minutoInicioRevision, 'Veces de revisión:', vecesRevision)
+        interval_hours = data['interval_hours']
+        interval_minutes = data['interval_minutes']
+        start_datetime = datetime.fromisoformat(data['start_datetime']) 
+        
+        print('Configuraciones: Hora de inicio:', start_datetime, 
+              'Intervalo (horas):', interval_hours, 
+              'Intervalo (minutos):', interval_minutes)
     else:
         print('Error en la solicitud, detalles:', response.text)
+        return None
 
     return {
-        'horaInicioRevision': horaInicioRevision,
-        'minutoInicioRevision': minutoInicioRevision,
-        'vecesRevision': vecesRevision
+        'interval_hours': interval_hours,
+        'interval_minutes': interval_minutes,
+        'start_datetime': start_datetime
     }
 
-# horaInicioRevision = 11 
-# minutoInicioRevision = 29 
-# vecesRevision = 3  
+# Función para calcular revisiones futuras
+def calcular_proximas_revisiones(start_datetime, interval_hours, interval_minutes, cantidad_revisiones):
+    resultados = []
+    intervalo = timedelta(hours=interval_hours, minutes=interval_minutes)
+    proxima_revision = start_datetime
 
-
+    for _ in range(cantidad_revisiones):
+        resultados.append(proxima_revision)
+        proxima_revision += intervalo
+    
+    return resultados
 
 # Vista para el inicio de sesión
 
@@ -102,15 +111,6 @@ def send_email(subject, body, to_email):
         print("Correo enviado exitosamente.")
     except Exception as e:
         print(f"Error al enviar el correo: {e}")
-# Función para convertir la hora con minutos decimales (ej. 1.14) a minutos
-def hora_a_minutos(hora, minutos):
-    return hora * 60 + minutos
-
-# Función para calcular las próximas horas de revisión en función de los parámetros dados
-def calcular_horas_revision(hora_inicio, minuto_inicio, veces):
-    inicio_en_minutos = hora_a_minutos(hora_inicio, minuto_inicio)
-    intervalo = 24 * 60 / veces  # Intervalo en minutos
-    return [(inicio_en_minutos + i * intervalo) % (24 * 60) for i in range(veces)]
 
 # Carga de servicios desde XML
 def load_services_from_xml():
