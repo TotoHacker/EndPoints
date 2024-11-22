@@ -36,14 +36,17 @@
     </div>
     <img src="{% static 'imagenes/LogoFondo.jpeg' %}" alt="Logo" class="mx-auto"/>
     <div id="loading">
-        <img src="{% static 'imagenes/Cargando.webp' %}" alt="Cargando" class="mb-4"/><!-- Este se mostrará mientras el sistema checa el estado de los sitios una vez cargado se mostrará lo demás -->
+        <img src="{% static 'imagenes/Cargando.webp' %}" alt="Cargando" class="mb-4"/>
         <h1>"Un momento mientras el sistema carga los datos 😊🐬"</h1>
     </div>
     
     <div class="container h-5/6 mx-auto p-10 border-solid border-2 border-sky-500" id="status-container" style="display: none;">
         <div class="flex justify-between items-center">
             <h1 class="text-3xl font-bold text-black">Dolphin Endpoints</h1>
-            <a href="/Home" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Volver al dashboar</a>
+            <div class="flex flex-col ">
+                <a href="/Home" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Return the dashboar</a>
+                <a href="   " class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center my-5">Check Now</a>
+            </div>
         </div>
 
         <h2 class="text-2xl font-bold mt-8 text-gray-800">Sitios Web</h2>
@@ -122,13 +125,11 @@
     </div>
 
     <script>
-        // Muestra el mensaje de carga y oculta el contenedor de estado
         document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('loading').style.display = 'flex';
             document.getElementById('status-container').style.display = 'none';
         });
 
-        // Al cargar el contenido, oculta el mensaje de carga y muestra el contenedor de estado
         window.onload = function() {
             document.getElementById('loading').style.display = 'none';
             document.getElementById('status-container').style.display = 'block';

@@ -16,8 +16,8 @@ from api.models import User
 # Función para calcular las próximas horas de revisión
 def calcular_proximas_revisiones(start_datetime, interval_hours, interval_minutes, cantidad_revisiones):
     resultados = []
-    intervalo = timedelta(hours=interval_hours, minutes=interval_minutes)
-    proxima_revision = start_datetime
+    intervalo = timedelta(hours=interval_hours+12, minutes=interval_minutes)
+    proxima_revision = start_datetime   
 
     for _ in range(cantidad_revisiones):
         resultados.append(proxima_revision)
@@ -159,19 +159,20 @@ def CrudU(request):
         data = {
             "name_user": request.POST.get('user-name'),
             "email": request.POST.get('user-email'),
-            "password_user": request.POST.get('user-Password'),
-            "Permissions": request.POST.get('user-Permissions')
+            "password_user": request.POST.get('user-Password'),  # Contraseña en texto plano
+            "Permissions": request.POST.get('user-Permissions'),
         }
-        # Enviar datos a la API
+
+        # Crear un nuevo usuario usando el modelo o enviar los datos a la API
         response = requests.post(URL, json=data)
 
         if response.status_code == 201:
             print('Usuario creado con éxito')
-            return redirect('Crud')  # Redirige a la misma página para ver el nuevo usuario
+            return redirect('Crud')
         else:
             print('Error en la creación del usuario:', response.text)
         
-        return redirect('CrudErrors')
+        return redirect('Crud')
 
     return render(request, 'monitorApp/Admin/Crud.html', {'users_data': users_data})
 
