@@ -19,5 +19,12 @@ passwordUser varchar(100)
 );
 */
 use endpoins;
+select * from auth_user;
 select * from Api_User;
-Select * from Api_SysError, Api_User;
+Select * from Api_SettingsMonitor ;
+INSERT INTO `endpoins`.`auth_user` 
+(`password`, `last_login`, `username`, `first_name`, `last_name`, `email`, `is_active`, `is_superuser`, `is_staff`) 
+VALUES 
+('12345', '2024-11-25 10:00:00', 'luis', 'lui', 'ba', 'toto@toto.com', '1', '0', '0');
+
+

@@ -41,6 +41,7 @@ password = os.getenv("EMAILPASSWORD", default="")
 print("Credenciales usuario:", usuario)
 print("Credenciales contraseña:", password)
 # Application definition
+# AUTH_USER_MODEL = 'api.User'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -98,8 +99,8 @@ print("BASE_DIR:", BASE_DIR)
 WSGI_APPLICATION = 'MiddleTier.wsgi.application'
 
 # settings.py
-LOGIN_URL = '/monitorApp/Login'
-
+LOGIN_URL = '/Login' 
+LOGIN_REDIRECT_URL = '/Home'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 

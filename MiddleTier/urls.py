@@ -5,19 +5,21 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.decorators import login_required
+
 urlpatterns = [
-    #Api
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),
-    #Others Views
-    path('monitorApp/', views.monitor_services, name='monitor_services'),
+    #login
     path('Login', views.Login, name='Login'),
+    #Api
+    path('api/', include('api.urls')),
     #solo si el usuario esta logeado puede ver
-    path('Home', views.Home, name='home'),
-    path('CrudErrors', views.CrudE, name='CrudErrors'),
-    path('CrudUser', views.CrudU, name='Crud'),
-    path("SettingMonitor", views.SettingsMonitor, name="Settings"),
-    # path("/CreateUser", views.CreateUser, name="CreateUser")
+    path('monitorApp/', login_required(views.monitor_services), name='monitor_services'),
+    path('Home', login_required(views.Home), name='home'),
+    path('CrudErrors', login_required(views.CrudE), name='CrudErrors'),
+    path('CrudUser', login_required(views.CrudU), name='Crud'),
+    path("SettingMonitor", login_required(views.SettingsMonitor), name="Settings"),
+
+    #vista principal
     path('', lambda request: HttpResponseRedirect('/Login')),
 ]
 

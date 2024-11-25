@@ -1,7 +1,6 @@
 import requests
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404, render, redirect
-from django.contrib.auth.decorators import login_required
 from monitor.views import (
     load_services_from_xml, check_service_status, 
     check_soap_status, send_email,
@@ -10,8 +9,6 @@ from monitor.views import (
 import datetime
 from datetime import datetime, timedelta
 from api.models import User
-
-
 
 # Función para calcular las próximas horas de revisión
 def calcular_proximas_revisiones(start_datetime, interval_hours, interval_minutes, cantidad_revisiones):
@@ -104,29 +101,10 @@ def monitor_services(request):
         'soap_status': soap_status,
     })
 
-def CreateUser(request):
-    URL="http://127.0.0.1:8000/api/users/"
-    DATA={
-        "name_user": "",
-        "email": "",
-        "password_user": ""
-    }
-    response = requests.post(URL, json=DATA)
-    if response.status_code == 201:
-        data = response.json()
-        print('Post creado de forma exitosa')
-        print('Respuesta:', data)
-    else:
-        print('Error en la solicitud, detalles:', response.text)
-    return render(request, 'monitorApp/Admin/Crud.html', {'UserCreate': DATA})
-
-# Otras vistas
 def Login(request):
+    if request.user.is_authenticated:
+        return redirect('home')  # Si ya está logeado, redirigir al Home
     return render(request, 'monitorApp/Login.html')
-
-#edit user
-
-
 def Home(request):
     return render(request, 'monitorApp/Admin/Home.html')
 
