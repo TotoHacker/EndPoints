@@ -14,6 +14,8 @@
   <header class="bg-white shadow-md fixed w-full z-10">
     <div class="container mx-auto px-6 py-4 flex justify-between items-center">
       <h1 class="text-2xl font-semibold text-gray-900">DolphinEndpoints</h1>
+      <a class="text-black" href="/logout">🛳 Logout</a>
+
       <button id="sidebarToggle" class="lg:hidden px-4 py-2 text-gray-900">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -26,10 +28,9 @@
   <div id="sidebar" class="fixed inset-y-0 left-0 bg-white w-64 shadow-lg pt-16 hidden lg:block transition-all duration-300">
     <nav class="space-y-4">
       <a href="/Home" class="block px-6 py-3 text-lg font-medium text-gray-700 hover:bg-gray-200 rounded transition">Home</a>
-      <a href="/CrudUser" class="block px-6 py-3 text-lg font-medium text-gray-700 hover:bg-gray-200 rounded transition">Crud Users</a>
-      <a href="/CrudErrors" class="block px-6 py-3 text-lg font-medium text-gray-700 hover:bg-gray-200 rounded transition">Crud Errors</a>
+     
       <a href="/monitorApp" class="block px-6 py-3 text-lg font-medium text-gray-700 hover:bg-gray-200 rounded transition">Monitor</a>
-      <a href="/SettingMonitor" class="block px-6 py-3 text-lg font-medium text-gray-700 hover:bg-gray-200 rounded transition">Settings Monitor</a>
+      <a href="/SettingsMonitor" class="block px-6 py-3 text-lg font-medium text-gray-700 hover:bg-gray-200 rounded transition">Settings Monitor</a>
     </nav>
   </div>
 
@@ -60,7 +61,6 @@
       </div>
     </div>
   </main>
-
   <!-- Modal for Edit -->
   <div id="edit-modal" tabindex="-1" class="hidden overflow-y-auto fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-gray-800 bg-opacity-50">
     <div class="relative p-6 w-full max-w-md bg-white rounded-lg shadow-lg">
@@ -71,7 +71,7 @@
         <span class="sr-only">Close modal</span>
       </button>
       <h3 class="text-lg font-medium text-gray-900">Edit Settings</h3>
-      <form method="POST" action="SettingMonitor">
+      <form method="POST" action="SettingsMonitor">
         {% csrf_token %}
         <input type="hidden" id="monitor-id" name="id">
         <div class="mt-4">

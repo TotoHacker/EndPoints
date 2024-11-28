@@ -1,6 +1,6 @@
-# api/serializers.py
 from rest_framework import serializers
-from .models import SysError, User, SettingsMonitor
+from django.contrib.auth.models import User  # Usa el modelo de usuario por defecto
+from .models import SysError, SettingsMonitor
 
 class SysErrorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,11 +9,10 @@ class SysErrorSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = User  # Modelo de usuario por defecto de Django
         fields = '__all__'
 
 class SettingsMonitorSerializer(serializers.ModelSerializer):
     class Meta:
-        model=SettingsMonitor
-        fields='__all__'
-        
+        model = SettingsMonitor
+        fields = '__all__'

@@ -41,7 +41,6 @@ password = os.getenv("EMAILPASSWORD", default="")
 print("Credenciales usuario:", usuario)
 print("Credenciales contraseña:", password)
 # Application definition
-# AUTH_USER_MODEL = 'api.User'
 
 INSTALLED_APPS = [
     'django.contrib.admin',

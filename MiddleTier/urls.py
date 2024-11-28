@@ -8,20 +8,26 @@ from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #login
+
+    # Autenticación
     path('Login', views.Login, name='Login'),
-    #Api
+    path('logout', views.logout_view, name='logout'),
+
+    # API
     path('api/', include('api.urls')),
-    #solo si el usuario esta logeado puede ver
+
+    # Monitor (requiere autenticación)
     path('monitorApp/', login_required(views.monitor_services), name='monitor_services'),
     path('Home', login_required(views.Home), name='home'),
-    path('CrudErrors', login_required(views.CrudE), name='CrudErrors'),
-    path('CrudUser', login_required(views.CrudU), name='Crud'),
-    path("SettingMonitor", login_required(views.SettingsMonitor), name="Settings"),
+    path('SettingsMonitor', login_required(views.SettingsMonitor), name='Settings'),
 
-    #vista principal
+    # Vista para "checar ahora" el sistema manualmente
+    path('monitorApp/check-now', login_required(views.check_now), name='check_now'),
+
+    # Redirección principal al Login
     path('', lambda request: HttpResponseRedirect('/Login')),
 ]
 
+# Configuración para servir archivos estáticos en modo DEBUG
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])

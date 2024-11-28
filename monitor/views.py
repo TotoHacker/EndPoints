@@ -10,47 +10,7 @@ from email.mime.image import MIMEImage
 from datetime import datetime, timedelta
 
 
-def Checktime():
-    URL = "http://127.0.0.1:8000/api/Settings/"
-    response = requests.get(URL)
-    
-    if response.status_code == 200:
-        data = response.json()
-        print('Respuesta de la API:', data)
-        print('Tipo de respuesta:', type(data))  
-        
-        if isinstance(data, list):
-            data = data[0]  
-            print('Primer elemento de la lista:', data)
-        
-        interval_hours = data['interval_hours']
-        interval_minutes = data['interval_minutes']
-        start_datetime = datetime.fromisoformat(data['start_datetime']) 
-        
-        print('Configuraciones: Hora de inicio:', start_datetime, 
-              'Intervalo (horas):', interval_hours, 
-              'Intervalo (minutos):', interval_minutes)
-    else:
-        print('Error en la solicitud, detalles:', response.text)
-        return None
 
-    return {
-        'interval_hours': interval_hours,
-        'interval_minutes': interval_minutes,
-        'start_datetime': start_datetime
-    }
-
-# Función para calcular revisiones futuras
-def calcular_proximas_revisiones(start_datetime, interval_hours, interval_minutes, cantidad_revisiones):
-    resultados = []
-    intervalo = timedelta(hours=interval_hours, minutes=interval_minutes)
-    proxima_revision = start_datetime
-
-    for _ in range(cantidad_revisiones):
-        resultados.append(proxima_revision)
-        proxima_revision += intervalo
-    
-    return resultados
 
 # Vista para el inicio de sesión
 
