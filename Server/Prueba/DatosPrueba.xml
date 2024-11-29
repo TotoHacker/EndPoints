@@ -11,10 +11,10 @@
         <namesite>Aqua Tours Cancun</namesite>
         <UrlSite>https://www.aquatourscancun.com/</UrlSite>
     </Registro>
-    <Registro>
+    <!-- <Registro>
         <namesite>Sitio Prueba Caido</namesite>
         <UrlSite>https://www.dolphindiscovery.com/xd</UrlSite>
-    </Registro>
+    </Registro> -->
     <Registro>
         <namesite>Aquaventuras</namesite>
         <UrlSite>https://www.aquaventuras.com/</UrlSite>
@@ -109,11 +109,11 @@
     
     <Registro>
         <namesite>Blog Dolphin Discovery</namesite>
-        <UrlSite>https://blog.dolphindiscovery.com.mx</UrlSite>
+        <UrlSite>https://blog.dolphindiscovery.com/</UrlSite>
     </Registro>
     <Registro>
         <namesite>Blog Dolphin Discovery MX</namesite>
-        <UrlSite>https://blog.dolphindiscovery.com.mx/</UrlSite>
+        <UrlSite>https://blog.dolphindiscovery.com.mx</UrlSite>
     </Registro>
     <Registro>
         <namesite>Blog Ocean Adventures Punta Cana</namesite>

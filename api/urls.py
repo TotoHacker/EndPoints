@@ -1,6 +1,8 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import SysErrorViewSet, UserViewSet, LoginView, SettingsViewSet
+from django.contrib.auth.decorators import login_required
+
 
 router = DefaultRouter()
 router.register(r'syserrors', SysErrorViewSet)

@@ -6,7 +6,7 @@ from monitor.views import (
 )
 from datetime import datetime, timedelta
 from django.contrib.auth import logout
-from django.utils.timezone import make_aware, now, is_naive 
+
 
 def Checktime():
     URL = "http://127.0.0.1:8000/api/Settings/"
@@ -15,18 +15,13 @@ def Checktime():
     if response.status_code == 200:
         data = response.json()
         print('Respuesta de la API:', data)
-        print('Tipo de respuesta:', type(data))
 
         if isinstance(data, list):
             data = data[0]  # Si es una lista, toma el primer elemento
 
         interval_hours = data['interval_hours']
         interval_minutes = data['interval_minutes']
-        start_datetime = datetime.fromisoformat(data['start_datetime'])
-
-        # Solo convertir si el datetime es naive
-        if is_naive(start_datetime):
-            start_datetime = make_aware(start_datetime)
+        start_datetime = datetime.fromisoformat(data['start_datetime'])  # Hora inicial como datetime
 
         print('Configuraciones: Hora de inicio:', start_datetime,
               'Intervalo (horas):', interval_hours,
@@ -40,6 +35,7 @@ def Checktime():
         'interval_minutes': interval_minutes,
         'start_datetime': start_datetime
     }
+
 
 def calcular_proximas_revisiones(start_datetime, interval_hours, interval_minutes, cantidad_revisiones):
     resultados = []
@@ -82,7 +78,7 @@ def realizar_revision():
             DATA = {
                 "site_url": sitio['url'],
                 "error_site_code": sitio['code'],
-                "date_error": now().strftime("%Y-%m-%d"),
+                "date_error": datetime.now().strftime("%Y-%m-%d"),
             }
 
             response = requests.post(URL, json=DATA)
@@ -112,7 +108,7 @@ def monitor_services(request):
     horas_revision = calcular_proximas_revisiones(start_datetime, interval_hours, interval_minutes, cantidad_revisiones)
     horas_revision_en_minutos = [hora.hour * 60 + hora.minute for hora in horas_revision]
 
-    hora_actual = now()
+    hora_actual = datetime.now()  # Hora del equipo directamente
     hora_actual_en_minutos = hora_actual.hour * 60 + hora_actual.minute
 
     website_status = []

@@ -9,7 +9,6 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth import login
 from django.shortcuts import render
 from django.contrib.auth.models import User  # Usa el modelo de usuario por defecto
-from django.contrib.auth.decorators import login_required
 
 # Vista para SysError
 class SysErrorViewSet(viewsets.ModelViewSet):
@@ -17,11 +16,13 @@ class SysErrorViewSet(viewsets.ModelViewSet):
     serializer_class = SysErrorSerializer
 
 # Vista para User
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()  # Usando el modelo de usuario por defecto
     serializer_class = UserSerializer
 
 # Vista para SettingsMonitor
+
 class SettingsViewSet(viewsets.ModelViewSet):
     queryset = SettingsMonitor.objects.all()
     serializer_class = SettingsMonitorSerializer
