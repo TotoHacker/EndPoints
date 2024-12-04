@@ -88,6 +88,29 @@ def realizar_revision():
                 print('Error registrando el sitio caído:', response.text)
 
     return website_status, api_status, soap_status
+def savestates(service_status):
+    url = 'http://127.0.0.1:8000/api/LastCheck/'
+    for service in service_status:
+        data = {
+            "service_type": service['type'],
+            "service_name": service['name'],
+            "service_url": service['url'],
+            "status": service['status'],
+            "response_code": service['code'],
+            "checked_at": datetime.now().isoformat()
+        }
+        response = requests.post(url, json=data)
+        if response.status_code != 201:
+            print('Error al guardar estado:', response.text)
+
+
+# Función para recuperar los últimos estados desde la API
+def seetates():
+    URL = "http://127.0.0.1:8000/api/LastCheck/"
+    response = requests.get(URL)
+    if response.status_code == 200:
+        return response.json()
+    return []
 
 
 def monitor_services(request):
@@ -98,6 +121,7 @@ def monitor_services(request):
             'website_status': [],
             'api_status': [],
             'soap_status': [],
+            'last_status': []
         })
 
     start_datetime = config['start_datetime']
@@ -115,17 +139,20 @@ def monitor_services(request):
     api_status = []
     soap_status = []
 
+    last_status = seetates()  # Obtener los últimos estados de los servicios
+
     if hora_actual_en_minutos in horas_revision_en_minutos:
         print(f"Hora de revisión: {hora_actual.strftime('%Y-%m-%d %H:%M:%S')}")
         website_status, api_status, soap_status = realizar_revision()
     else:
         print(f"No es hora de revisión. Hora actual: {hora_actual.strftime('%H:%M')}")
         print("Próximas horas de revisión:", [hora.strftime('%H:%M') for hora in horas_revision])
-
+    redirect('monitor_services')
     return render(request, 'monitorApp/status_list.html', {
         'website_status': website_status,
         'api_status': api_status,
         'soap_status': soap_status,
+        'last_status': last_status  # Enviar los últimos estados a la plantilla
     })
 
 
@@ -149,9 +176,13 @@ def Home(request):
 
 
 def SettingsMonitor(request):
+    from datetime import datetime, timedelta
+    import requests
+
     URLS = "http://127.0.0.1:8000/api/Settings/"
     data = []
 
+    # Realiza la solicitud GET para obtener configuraciones
     response = requests.get(URLS)
     if response.status_code == 200:
         data = response.json()
@@ -159,26 +190,68 @@ def SettingsMonitor(request):
     else:
         print('Error en la solicitud GET, detalles:', response.text)
 
-    if request.method == "POST":
-        monitor_id = 1
-        updated_data = {
-            "start_datetime": request.POST.get('start_datetime', ''),
-            "interval_hours": request.POST.get('interval_hours', ''),
-            "interval_minutes": request.POST.get('interval_minutes', '')
-        }
+    # Obtén las próximas revisiones si los datos están disponibles
+    proximas_revisiones = []
+    if isinstance(data, list) and len(data) > 0:
+        config = data[0]
+        start_datetime = datetime.fromisoformat(config['start_datetime'])
+        interval_hours = int(config['interval_hours'])
+        interval_minutes = int(config['interval_minutes'])
+        veces=24 * 60 // (interval_hours * 60 + interval_minutes)
+        # Calcula las próximas 5 revisiones
+        proximas_revisiones = [
+            revision.strftime('%H:%M')  # Formatea solo la hora
+            for revision in calcular_proximas_revisiones(
+                start_datetime, interval_hours, interval_minutes, veces
+            )
+        ]
 
-        url_put = f"http://127.0.0.1:8000/api/Settings/{monitor_id}/"
-        response = requests.put(url_put, json=updated_data)
-        if response.status_code == 200:
-            print('Configuración actualizada exitosamente')
-        else:
-            print('Error en la solicitud PUT, detalles:', response.text)
+    return render(request, 'monitorApp/Admin/SettingsMonitor.html', {
+        'settingsConf': data,
+        'proximas_revisiones': proximas_revisiones
+    })
 
-        return redirect('Settings')
-
-    return render(request, 'monitorApp/Admin/SettingsMonitor.html', {'settingsConf': data})
 
 
 def logout_view(request):
     logout(request)
     return redirect('Login')
+
+
+def prueba(request):
+    from datetime import datetime, timedelta
+    import requests
+
+    URLS = "http://127.0.0.1:8000/api/Settings/"
+    data = []
+
+    # Realiza la solicitud GET para obtener configuraciones
+    response = requests.get(URLS)
+    if response.status_code == 200:
+        data = response.json()
+        print('Solicitud GET exitosa:', data)
+    else:
+        print('Error en la solicitud GET, detalles:', response.text)
+
+    # Obtén las próximas revisiones si los datos están disponibles
+    proximas_revisiones = []
+    if isinstance(data, list) and len(data) > 0:
+        config = data[0]
+        start_datetime = datetime.fromisoformat(config['start_datetime'])
+        interval_hours = int(config['interval_hours'])
+        interval_minutes = int(config['interval_minutes'])
+        veces=24 * 60 // (interval_hours * 60 + interval_minutes)
+        # Calcula las próximas 5 revisiones
+        proximas_revisiones = [
+            revision.strftime('%H:%M')  # Formatea solo la hora
+            for revision in calcular_proximas_revisiones(
+                start_datetime, interval_hours, interval_minutes, veces
+            )
+        ]
+
+    return render(request, 'monitorApp/Admin/prueba.html', {
+        'settingsConf': data,
+        'proximas_revisiones': proximas_revisiones
+    })
+
+    # return render(request, 'monitorApp/Admin/prueba.html')

@@ -600,99 +600,69 @@
                 <div class="col-span-2 bg-white rounded-md dark:bg-darker" x-data="{ isOn: false }">
                   <!-- Card header -->
                   <div class="flex items-center justify-between p-4 border-b dark:border-primary">
-                    <h4 class="text-lg font-semibold text-gray-500 dark:text-light">Sites</h4>
-                    <div class="flex items-center space-x-2">
-                      <span class="text-sm text-gray-500 dark:text-light">Last year</span>
-                      <button
-                        class="relative focus:outline-none"
-                        x-cloak
-                        @click="isOn = !isOn; $parent.updateBarChart(isOn)"
-                      >
-                        <div
-                          class="w-12 h-6 transition rounded-full outline-none bg-primary-100 dark:bg-primary-darker"
-                        ></div>
-                        <div
-                          class="absolute top-0 left-0 inline-flex items-center justify-center w-6 h-6 transition-all duration-200 ease-in-out transform scale-110 rounded-full shadow-sm"
-                          :class="{ 'translate-x-0  bg-white dark:bg-primary-100': !isOn, 'translate-x-6 bg-primary-light dark:bg-primary': isOn }"
-                        ></div>
-                      </button>
-                    </div>
+                    <h4 class="text-lg font-semibold text-gray-500 dark:text-light">Configuración Actual</h4>
+                    
                   </div>
                   <!-- Chart -->
-                  <div class="overflow-x-auto"id="errorDetails">
-                    <div class="relative p-4 h-72" >
-                      <table class="min-w-full table-auto">
-                        <thead class="bg-gray-100">
-                          <tr>
-                            <th class="px-4 py-2 text-left text-gray-700">URL</th>
-                            <th class="px-4 py-2 text-left text-gray-700">Fecha</th>
-                            <th class="px-4 py-2 text-left text-gray-700">Código de Error</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          
-                        </tbody>
-                      </table>
+                  <div class="p-4">
+                    <div class="relative h-72">
+                      <div class="relative border border-gray-300 flex flex-col p-6 rounded-lg shadow-md">
+                        {% for monitor in settingsConf %}
+                        <div class="mb-6">
+                          <h3 class="text-lg font-semibold text-gray-500 dark:text-light">Fecha de Inicio</h3>
+                          <p class="text-gray-600">{{ monitor.start_datetime }}</p>
+                          <h3 class="text-lg font-semibold text-gray-500 dark:text-light">Intervalo</h3>
+                          <p class="text-gray-600">
+                            {{ monitor.interval_hours }} Horas, {{ monitor.interval_minutes }} Minutos
+                          </p>
+                          <div class="flex mt-4">
+                            <button 
+                              onclick="openEditModal('{{ monitor.id }}', '{{ monitor.start_datetime }}', '{{ monitor.interval_hours }}', '{{ monitor.interval_minutes }}')" 
+                              class="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5">
+                              Editar
+                            </button>
+                          </div>
+                        </div>
+                        {% endfor %}
+                      </div>
                     </div>
                   </div>
+                  
                 </div>
 
                 <!-- Doughnut chart card -->
                 <div class="bg-white rounded-md dark:bg-darker" x-data="{ isOn: false }">
                   <!-- Card header -->
                   <div class="flex items-center justify-between p-4 border-b dark:border-primary">
-                    <h4 class="text-lg font-semibold text-gray-500 dark:text-light">Doughnut Chart</h4>
-                    <div class="flex items-center">
-                      <button
-                        class="relative focus:outline-none"
-                        x-cloak
-                        @click="isOn = !isOn; $parent.updateDoughnutChart(isOn)"
-                      >
-                        <div
-                          class="w-12 h-6 transition rounded-full outline-none bg-primary-100 dark:bg-primary-darker"
-                        ></div>
-                        <div
-                          class="absolute top-0 left-0 inline-flex items-center justify-center w-6 h-6 transition-all duration-200 ease-in-out transform scale-110 rounded-full shadow-sm"
-                          :class="{ 'translate-x-0  bg-white dark:bg-primary-100': !isOn, 'translate-x-6 bg-primary-light dark:bg-primary': isOn }"
-                        ></div>
-                      </button>
-                    </div>
+                    <h4 class="text-lg font-semibold text-gray-500 dark:text-light">Horas de Revisión</h4>
+                   
                   </div>
                   <!-- Chart -->
-                  <div class="relative p-4 h-72">
-                    <canvas id="polarAreaChart"></canvas>
+                  <div class="relative p-4 h-72 overflow-auto">
+                    <div class="relative border border-gray-300 flex flex-col p-6 rounded-lg shadow-md">
+                      {% if proximas_revisiones %}
+                        <ul class="grid grid-cols-2 gap-x-4 gap-y-2 text-gray-700 dark:text-light">
+                          {% for revision in proximas_revisiones %}
+                            <li class="flex items-center">
+                              <span class="w-2 h-2 rounded-full bg-gray-500 dark:bg-gray-300 mr-2"></span>
+                              {{ revision }}
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      {% else %}
+                        <p class="text-center text-gray-500 dark:text-light">
+                          No hay próximas revisiones disponibles.
+                        </p>
+                      {% endif %}
+                    </div>
                   </div>
                 </div>
+                
+                
               </div>
-
-             
                 </div>
 
-                <!-- Line chart card -->
-                <div class="col-span-2 bg-white rounded-md dark:bg-darker" x-data="{ isOn: false }">
-                  <!-- Card header -->
-                  <div class="flex items-center justify-between p-4 border-b dark:border-primary">
-                    <h4 class="text-lg font-semibold text-gray-500 dark:text-light">Line Chart</h4>
-                    <div class="flex items-center">
-                      <button
-                        class="relative focus:outline-none"
-                        x-cloak
-                        @click="isOn = !isOn; $parent.updateLineChart()"
-                      >
-                        <div
-                          class="w-12 h-6 transition rounded-full outline-none bg-primary-100 dark:bg-primary-darker"
-                        ></div>
-                        <div
-                          class="absolute top-0 left-0 inline-flex items-center justify-center w-6 h-6 transition-all duration-200 ease-in-out transform scale-110 rounded-full shadow-sm"
-                          :class="{ 'translate-x-0  bg-white dark:bg-primary-100': !isOn, 'translate-x-6 bg-primary-light dark:bg-primary': isOn }"
-                        ></div>
-                      </button>
-                    </div>
-                  </div>
-                  <!-- Chart -->
-                  <div class="relative p-4 h-72">
-                    <canvas id="statusSitesChart"></canvas>
-                  </div>
+           
                 </div>
               </div>
             </div>

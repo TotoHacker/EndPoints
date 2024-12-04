@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'compressor',
     'rest_framework',
     'api',
+    'django_crontab',
     
 ]
 REST_FRAMEWORK = {
@@ -60,6 +61,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer', 
     ],
+    
 }
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -96,6 +98,10 @@ STATICFILES_DIRS = [
 
 print("BASE_DIR:", BASE_DIR)
 WSGI_APPLICATION = 'MiddleTier.wsgi.application'
+#Trabajo personalizado
+CRONJOBS = [
+    ('*/1 * * * *', 'myapp.cron.monitor_services')
+]
 
 # settings.py
 LOGIN_URL = '/Login' 

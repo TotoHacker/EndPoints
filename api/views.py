@@ -1,7 +1,7 @@
 # api/views.py
 from rest_framework import viewsets
-from .models import SysError, SettingsMonitor
-from .serializers import SysErrorSerializer, UserSerializer, SettingsMonitorSerializer
+from .models import SysError, SettingsMonitor,LastCheckStatus
+from .serializers import SysErrorSerializer, UserSerializer, SettingsMonitorSerializer, last_check_statusSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -9,25 +9,35 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth import login
 from django.shortcuts import render
 from django.contrib.auth.models import User  # Usa el modelo de usuario por defecto
+from rest_framework.permissions import IsAuthenticated
 
 # Vista para SysError
 class SysErrorViewSet(viewsets.ModelViewSet):
     queryset = SysError.objects.all()
     serializer_class = SysErrorSerializer
+    # permission_classes = [IsAuthenticated]
+
 
 # Vista para User
-
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()  # Usando el modelo de usuario por defecto
+    queryset = User.objects.all() 
     serializer_class = UserSerializer
+    # permission_classes = [IsAuthenticated]
+
 
 # Vista para SettingsMonitor
+class last_check_status (viewsets.ModelViewSet):
+    queryset = LastCheckStatus.objects.all()
+    serializer_class = last_check_statusSerializer
+    # permission_classes = [IsAuthenticated]
+    
 
 class SettingsViewSet(viewsets.ModelViewSet):
     queryset = SettingsMonitor.objects.all()
     serializer_class = SettingsMonitorSerializer
+    # permission_classes = [IsAuthenticated]
 
-# Vista para Login (si es necesario)
+# Vista para Login 
 class LoginView(APIView):
     def post(self, request):
         # Obtener el email y la contraseña del cuerpo de la solicitud
