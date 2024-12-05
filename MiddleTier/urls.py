@@ -20,10 +20,9 @@ urlpatterns = [
     path('monitorApp/', login_required(views.monitor_services), name='monitor_services'),
     path('Home', login_required(views.Home), name='home'),
     path('SettingsMonitor', login_required(views.SettingsMonitor), name='Settings'),
-
-    # Vista para "checar ahora" el sistema manualmente
     path('monitorApp/check-now', login_required(views.check_now), name='check_now'),
     path('prueba', views.prueba, name='prueba'),
+    path('pruebatime',views.realizar_revision,name='pruebadef'),
     # Redirección principal al Login
     path('', lambda request: HttpResponseRedirect('/Login')),
 ]

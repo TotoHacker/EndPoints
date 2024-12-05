@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import login
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User  # Usa el modelo de usuario por defecto
 from rest_framework.permissions import IsAuthenticated
 
@@ -55,7 +55,7 @@ class LoginView(APIView):
             if check_password(password, user.password):
                 # Iniciar sesión
                 login(request, user)  # Esto requiere un usuario con sesión
-                return render(request, 'monitorApp/Admin/Home.html')  # Redirige a una página después del login
+                return redirect('/Home') # Redirige a una página después del login
             else:
                 return Response({"error": "Credenciales inválidas"}, status=status.HTTP_401_UNAUTHORIZED)
         except User.DoesNotExist:

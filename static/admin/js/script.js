@@ -129,9 +129,9 @@ new Chart(ctxServerStatus, {
       const errorDetails = document.getElementById('errorDetails');
       const errorRows = data.map(item => `
         <tr>
-          <td class="px-4 py-2 text-gray-700 border-b">${item.site_url}</td>
-          <td class="px-4 py-2 text-gray-600 border-b">${item.date_error}</td>
-          <td class="px-4 py-2 text-gray-600 border-b">${item.error_site_code}</td>
+          <td class="px-4 py-2 text-gray-700 border-b dark:text-light">${item.site_url}</td>
+          <td class="px-4 py-2 text-gray-600 border-b dark:text-light">${item.date_error}</td>
+          <td class="px-4 py-2 text-gray-600 border-b dark:text-light">${item.error_site_code}</td>
         </tr>
       `).join('');
       

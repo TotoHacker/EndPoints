@@ -610,9 +610,9 @@
                         {% for monitor in settingsConf %}
                         <div class="mb-6">
                           <h3 class="text-lg font-semibold text-gray-500 dark:text-light">Fecha de Inicio</h3>
-                          <p class="text-gray-600">{{ monitor.start_datetime }}</p>
+                          <p class="text-gray-600 dark:text-light">{{ monitor.start_datetime }}</p>
                           <h3 class="text-lg font-semibold text-gray-500 dark:text-light">Intervalo</h3>
-                          <p class="text-gray-600">
+                          <p class="text-gray-600 dark:text-light">
                             {{ monitor.interval_hours }} Horas, {{ monitor.interval_minutes }} Minutos
                           </p>
                           <div class="flex mt-4">
@@ -663,7 +663,7 @@
                 </div>
 
            
-                </div>
+     
               </div>
             </div>
           </main>
@@ -675,42 +675,43 @@
             <div>Dolphin Discovery &copy;</div>
             
           </footer>
+           <!--Modal-->
+    <div id="edit-modal" tabindex="-1" class="hidden overflow-y-auto fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-gray-800 bg-opacity-50 dark:bg-gray-900 dark:bg-opacity-70">
+      <div class="relative p-6 w-full max-w-md bg-white rounded-lg shadow-lg dark:bg-darker dark:text-gray-200">
+        <button type="button" class="absolute top-3 right-3 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-700 dark:hover:text-white" onclick="toggleModal('edit-modal')">
+          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+        <h3 class="text-lg font-semibold text-gray-500 dark:text-light">Edit Settings</h3>
+        <form method="POST" action="SettingsMonitor">
+          {% csrf_token %}
+          <input type="hidden" id="monitor-id" name="monitor-id">
+          <div class="mb-4">
+            <label for="start_datetime" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Start Date & Time</label>
+            <input type="datetime-local" id="start_datetime" name="start_datetime" class="mt-1 block w-full px-4 py-2 text-gray-800 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400">
+          </div>
+          <div class="mb-4">
+            <label for="interval_hours" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Interval Hours</label>
+            <input type="number" id="interval_hours" name="interval_hours" class="mt-1 block w-full px-4 py-2 text-gray-800 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400">
+          </div>
+          <div class="mb-4">
+            <label for="interval_minutes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Interval Minutes</label>
+            <input type="number" id="interval_minutes" name="interval_minutes" class="mt-1 block w-full px-4 py-2 text-gray-800 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400">
+          </div>
+          <div class="flex justify-end mt-6">
+            <button type="submit" class="text-white bg-blue-600 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 m-2">Save</button>
+            <button type="button" class="text-white bg-gray-600 hover:bg-gray-800 font-medium rounded-lg text-sm px-5 py-2.5 m-2" onclick="toggleModal('edit-modal')">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
         </div>
       </div>
     </div>
- <!-- Modal for Edit -->
- <div id="edit-modal" tabindex="-1" class="hidden overflow-y-auto fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-gray-800 bg-opacity-50">
-  <div class="relative p-6 w-full max-w-md bg-white rounded-lg shadow-lg">
-    <button type="button" class="absolute top-3 right-3 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center" onclick="toggleModal('edit-modal')">
-      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-      </svg>
-      <span class="sr-only">Close modal</span>
-    </button>
-    <h3 class="text-lg font-medium text-gray-900">Edit Settings</h3>
-    <form method="POST" action="SettingsMonitor">
-      {% csrf_token %}
-      <input type="hidden" id="monitor-id" name="monitor-id">
-      <div class="mb-4">
-        <label for="start_datetime" class="block text-sm font-medium text-gray-700">Start Date & Time</label>
-        <input type="datetime-local" id="start_datetime" name="start_datetime" class="mt-1 block w-full px-4 py-2 text-gray-800 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
-      </div>
-      <div class="mb-4">
-        <label for="interval_hours" class="block text-sm font-medium text-gray-700">Interval Hours</label>
-        <input type="number" id="interval_hours" name="interval_hours" class="mt-1 block w-full px-4 py-2 text-gray-800 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
-      </div>
-      <div class="mb-4">
-        <label for="interval_minutes" class="block text-sm font-medium text-gray-700">Interval Minutes</label>
-        <input type="number" id="interval_minutes" name="interval_minutes" class="mt-1 block w-full px-4 py-2 text-gray-800 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
-      </div>
-      <div class="flex justify-end mt-6">
-        <button type="submit" class="text-white bg-blue-600 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 m-2">Save</button>
-        <button type="button" class="text-white bg-gray-600 hover:bg-gray-800 font-medium rounded-lg text-sm px-5 py-2.5 m-2" onclick="toggleModal('edit-modal')">Cancel</button>
-      </div>
-    </form>
-  </div>
-</div>
-
+   
+    
 <script>
   function toggleModal(modalId) {
     const modal = document.getElementById(modalId);

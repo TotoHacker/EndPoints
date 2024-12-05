@@ -10,6 +10,69 @@ from email.mime.image import MIMEImage
 from datetime import datetime, timedelta
 
 
+def InitialStatus():
+    websites = []
+    apis = []
+    soap_services = []
+    count=0
+    xml_path = os.path.join(settings.BASE_DIR, 'Server', 'Prueba', 'DatosPrueba.xml')
+
+    if not os.path.isfile(xml_path):
+        print(f"Error: El archivo XML no se encuentra en la ruta: {xml_path}")
+        return websites, apis, soap_services
+
+    tree = ET.parse(xml_path)
+    root = tree.getroot()
+
+    # Carga de sitios web
+    for item in root.findall('Registro'):
+        url = item.find('UrlSite')
+        name = item.find('namesite')
+        if url is not None and name is not None:
+            websites.append({
+                'name': name.text,
+                'url': url.text,
+                'status': '--',
+                'code': '--',
+                'state': '--'
+            })
+        count=count+1
+
+        # Carga de APIs
+        api_url = item.find('UrlApi')
+        api_name = item.find('nameApi')
+        if api_url is not None and api_name is not None:
+            method = item.find('Type').text if item.find('Type') is not None else 'HEAD'
+            apis.append({
+                'name': api_name.text,
+                'url': api_url.text,
+                'method': method,
+                'status': '--',
+                'code': '--',
+                'state': '--'
+            })
+
+    # Carga de servicios SOAP
+    for server_number in range(1, 3):
+        soap_request = f"""<?xml version="1.0" encoding="utf-8"?>
+        <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+          <soap:Body>
+            <obtenerEstadodeLaConexion xmlns="http://dtraveller.com/">
+              <server>{server_number}</server>
+            </obtenerEstadodeLaConexion>
+          </soap:Body>
+        </soap:Envelope>"""
+        server_name = f'Servidor {"Mexico" if server_number == 1 else "Caribe"} {server_number}'
+        soap_services.append({
+            'name': server_name,
+            'url': 'https://dtnsr-ws.dtraveller.com/dtraveller.asmx?op=obtenerEstadodeLaConexion',
+            'body': soap_request,
+            'status': '--',
+            'code': '--',
+            'state': '--'
+        })
+
+    return websites, apis, soap_services, count
 
 
 # Vista para el inicio de sesión
@@ -77,7 +140,7 @@ def load_services_from_xml():
     websites = []
     apis = []
     soap_services = []
-
+    count=0
     xml_path = os.path.join(settings.BASE_DIR, 'Server', 'Prueba', 'DatosPrueba.xml')
 
     if not os.path.isfile(xml_path):
@@ -100,7 +163,7 @@ def load_services_from_xml():
         if api_url is not None and api_name is not None:
             method = item.find('Type').text if item.find('Type') is not None else 'HEAD'
             apis.append({'name': api_name.text, 'url': api_url.text, 'method': method})
-
+        count=count+1
     # Carga de servicios SOAP
     for server_number in range(1, 3):
         soap_request = f"""<?xml version="1.0" encoding="utf-8"?>
@@ -119,7 +182,7 @@ def load_services_from_xml():
             'body': soap_request
         })
 
-    return websites, apis, soap_services
+    return websites, apis, soap_services, count
 
 # Función para verificar el estado de cada servicio usando una solicitud GET
 def check_service_status(service):
@@ -129,7 +192,7 @@ def check_service_status(service):
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'
         }
         response = requests.get(service['url'], headers=headers, timeout=5)
-
+        response_time=response.elapsed.total_seconds()
         if response.status_code == 200:
             status = 'Operativo'
         elif response.status_code == 406:
@@ -142,14 +205,18 @@ def check_service_status(service):
             'url': service['url'],
             'status': status,
             'code': response.status_code,
-            'response': response.text[:500]
+            'response': response.text[:500],
+            'response_time':response_time
+
         }
     except requests.exceptions.RequestException as e:
         print(f"Error checking service {service['name']}: {e}")
         return {
             'name': service['name'],
-            'status': 'Caído',
-            'code': 'N/A'
+            'url': service['url'],
+            'status': 'Tiempo excedido',
+            'code': 'N/A',
+            'response_time': 'N/A'
         }
 
 # Función para verificar el estado de un servicio SOAP
