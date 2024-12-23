@@ -55,7 +55,7 @@ class LoginView(APIView):
             if check_password(password, user.password):
                 # Iniciar sesión
                 login(request, user)  # Esto requiere un usuario con sesión
-                return redirect('/Home') # Redirige a una página después del login
+                return redirect('/dashboard') # Redirige a una página después del login
             else:
                 return Response({"error": "Credenciales inválidas"}, status=status.HTTP_401_UNAUTHORIZED)
         except User.DoesNotExist:

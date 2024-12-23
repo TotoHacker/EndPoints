@@ -18,12 +18,12 @@ urlpatterns = [
 
     # Monitor (requiere autenticación)
     path('monitorApp/', login_required(views.monitor_services), name='monitor_services'),
-    path('Home', login_required(views.Home), name='home'),
+    path('dashboard', login_required(views.Home), name='dashboard'),
     path('SettingsMonitor', login_required(views.SettingsMonitor), name='Settings'),
     path('monitorApp/check-now', login_required(views.check_now), name='check_now'),
-    path('Inicio', views.pagetext, name='Inicio'),
+    path('Home', views.pagetext, name='Home'),
     # Redirección principal al Login
-    path('', lambda request: HttpResponseRedirect('/Login')),
+    path('', lambda request: HttpResponseRedirect('/Home')),
 ]
 
 # Configuración para servir archivos estáticos en modo DEBUG

@@ -213,7 +213,7 @@ def check_now(request):
 
 def Login(request):
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('dashboard')
     return render(request, 'monitorApp/Login.html')
 
 
