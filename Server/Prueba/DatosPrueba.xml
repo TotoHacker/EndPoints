@@ -8,16 +8,12 @@
     
     <!-- Additional Sites -->
     <Registro>
-        <namesite>Aqua Tours Cancun</namesite>
-        <UrlSite>https://www.aquatourscancun.com/xd/</UrlSite>
-    </Registro>
-    <!-- <Registro>
-        <namesite>Sitio Prueba Caido</namesite>
-        <UrlSite>https://www.dolphindiscovery.com/xd</UrlSite>
-    </Registro> -->
-    <Registro>
         <namesite>Aquaventuras</namesite>
         <UrlSite>https://www.aquaventuras.com/</UrlSite>
+    </Registro>
+    <Registro>
+        <namesite>https://marinelandcrc.org/</namesite>
+        <UrlSite>https://marinelandcrc.org/</UrlSite>
     </Registro>
     <Registro>
         <namesite>Aquaventuras MX</namesite>
