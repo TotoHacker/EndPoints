@@ -34,7 +34,9 @@ def InitialStatus():
                 'url': url.text,
                 'status': '--',
                 'code': '--',
-                'state': '--'
+                'state': '--',
+                'response_time':'--'
+                
             })
         count=count+1
 

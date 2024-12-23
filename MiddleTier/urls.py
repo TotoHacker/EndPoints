@@ -21,8 +21,7 @@ urlpatterns = [
     path('Home', login_required(views.Home), name='home'),
     path('SettingsMonitor', login_required(views.SettingsMonitor), name='Settings'),
     path('monitorApp/check-now', login_required(views.check_now), name='check_now'),
-    path('prueba', views.prueba, name='prueba'),
-    path('pruebatime',views.realizar_revision,name='pruebadef'),
+    path('Inicio', views.pagetext, name='Inicio'),
     # Redirección principal al Login
     path('', lambda request: HttpResponseRedirect('/Login')),
 ]

@@ -45,7 +45,6 @@ def calcular_proximas_revisiones(start_datetime, interval_hours, interval_minute
     for _ in range(cantidad_revisiones):
         resultados.append(proxima_revision)
         proxima_revision += intervalo
-
     return resultados
 
 
@@ -58,6 +57,7 @@ def realizar_revision():
     soap_status = [check_soap_status(soap) for soap in soap_services]
     total_response_time=0
     n=0
+    percentageTime=0
     sitios_caidos = []
     # Identificar sitios caídos
     for service in website_status:
@@ -65,21 +65,24 @@ def realizar_revision():
             sitios_caidos.append({
                 'name': service['name'],
                 'code': service['code'],
-                'url': service.get('url', 'URL no disponible')
+                'url': service.get('url', 'URL no disponible'),
+                'response_time':service.get('response_time')
             })
             countdown += 1  
         if service.get('response_time')!='N/A':
             response_time = float(service.get('response_time', 0) or 0)
             total_response_time += response_time
             n=n+1
-        PromTime=total_response_time/5/n
+    PromTime=total_response_time/5/n
+    calpercentTime = (100/5) * PromTime
+    percentageTime=100-calpercentTime
         
-    print('response',total_response_time,n)
+   
 
     # Enviar notificaciones si hay sitios caídos
     if sitios_caidos:
         subject = "Servicios caídos en el monitor"
-        send_email(subject, sitios_caidos, '')
+        # send_email(subject, sitios_caidos, 'totochucl@gmail.com')
 
         # Registrar errores en la API
         for sitio in sitios_caidos:
@@ -96,7 +99,7 @@ def realizar_revision():
             else:
                 print('Error registrando el sitio caído:', response.text)
 
-    return website_status, api_status, soap_status,count,countdown,PromTime
+    return website_status, api_status, soap_status,count,countdown,PromTime,percentageTime
 
 def savestates(service_status):
     url = 'http://127.0.0.1:8000/api/LastCheck/'
@@ -133,12 +136,11 @@ def monitor_services(request):
             'soap_status': [],
             'last_status': []
         })
-
+    percentageTime=0
     start_datetime = config['start_datetime']
     interval_hours = config['interval_hours']
     interval_minutes = config['interval_minutes']
     cantidad_revisiones = 24 * 60 // (interval_hours * 60 + interval_minutes)
-
     horas_revision = calcular_proximas_revisiones(start_datetime, interval_hours, interval_minutes, cantidad_revisiones)
     horas_revision_en_minutos = [hora.hour * 60 + hora.minute for hora in horas_revision]
 
@@ -153,13 +155,22 @@ def monitor_services(request):
 
     if hora_actual_en_minutos in horas_revision_en_minutos:
         print(f"Hora de revisión: {hora_actual.strftime('%Y-%m-%d %H:%M:%S')}")
-        website_status, api_status, soap_status,count,countdown,PromTime = realizar_revision()
+        website_status, api_status, soap_status,count,countdown,PromTime,percentageTime = realizar_revision()
     else:
         print(f"No es hora de revisión. Hora actual: {hora_actual.strftime('%H:%M')}")
         print("Próximas horas de revisión:", [hora.strftime('%H:%M') for hora in horas_revision])
         countdown=0
         PromTime=0
         website_status, api_status, soap_status, count = InitialStatus()  
+    
+
+    if count > 0 and countdown > 0:
+        caldown = (100/count) * countdown
+        percentagedown = f"{caldown:.2f}%"
+        percentageup = 100-caldown
+    else:
+        percentagedown ='N/A'
+        percentageup=100
 
     return render(request, 'monitorApp/status_list.html', {
         'website_status': website_status,
@@ -168,18 +179,35 @@ def monitor_services(request):
         'last_status': last_status,
         'count' :count,
         'countdown':countdown,
-        'PromTime':PromTime
+        'PromTime':PromTime,
+        'percentagedown':percentagedown,
+        'percentageup':percentageup,
+        'percentageTime':percentageTime
     })
 
 def check_now(request):
-    website_status, api_status, soap_status, count, countdown, PromTime = realizar_revision()
+    website_status, api_status, soap_status, count, countdown, PromTime, percentageTime = realizar_revision()
+    
+    if count > 0 and countdown > 0:
+        caldown = (100/count) * countdown
+        percentagedown = f"{caldown:.2f}%" 
+        percentageup = 100-caldown
+
+    else:
+        percentagedown ='N/A'
+        percentageup=100
+
+
     return render(request, 'monitorApp/status_list.html', {
         'website_status': website_status,
         'api_status': api_status,
         'soap_status': soap_status,
         'count' :count,
         'countdown':countdown,
-        'PromTime':PromTime
+        'PromTime':PromTime,
+        'percentagedown':percentagedown,
+        'percentageup':percentageup,
+        'percentageTime':percentageTime
     })
 
 
@@ -250,48 +278,5 @@ def logout_view(request):
     logout(request)
     return redirect('Login')
 
-
-def prueba(request):
-    config = Checktime()
-    if not config:
-        print("Error al obtener configuraciones de Checktime.")
-        return render(request, 'monitorApp/status_list.html', {
-            'website_status': [],
-            'api_status': [],
-            'soap_status': [],
-            'last_status': []
-        })
-
-    start_datetime = config['start_datetime']
-    interval_hours = config['interval_hours']
-    interval_minutes = config['interval_minutes']
-    cantidad_revisiones = 24 * 60 // (interval_hours * 60 + interval_minutes)
-
-    horas_revision = calcular_proximas_revisiones(start_datetime, interval_hours, interval_minutes, cantidad_revisiones)
-    horas_revision_en_minutos = [hora.hour * 60 + hora.minute for hora in horas_revision]
-
-    hora_actual = datetime.now()  # Hora del equipo directamente
-    hora_actual_en_minutos = hora_actual.hour * 60 + hora_actual.minute
-
-    website_status = []
-    api_status = []
-    soap_status = []
-
-    last_status = seetates()  # Obtener los últimos estados de los servicios
-
-    if hora_actual_en_minutos in horas_revision_en_minutos:
-        print(f"Hora de revisión: {hora_actual.strftime('%Y-%m-%d %H:%M:%S')}")
-        website_status, api_status, soap_status = realizar_revision()
-    else:
-        print(f"No es hora de revisión. Hora actual: {hora_actual.strftime('%H:%M')}")
-        print("Próximas horas de revisión:", [hora.strftime('%H:%M') for hora in horas_revision])
-        
-        website_status, api_status, soap_status = InitialStatus()  # Desestructurar la tupla directamente
-
-    return render(request, 'monitorApp/Admin/prueba.html', {
-        'website_status': website_status,
-        'api_status': api_status,
-        'soap_status': soap_status,
-        'last_status': last_status  # Enviar los últimos estados a la plantilla
-    })
-
+def pagetext(request):
+    return render(request, 'monitorApp/PageText.html')

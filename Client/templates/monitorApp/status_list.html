@@ -69,6 +69,7 @@
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         stroke-linecap="round"
@@ -87,6 +88,7 @@
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
@@ -125,6 +127,7 @@
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         stroke-linecap="round"
@@ -143,6 +146,7 @@
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
@@ -192,6 +196,7 @@
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                   </svg>
@@ -218,6 +223,7 @@
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
                       stroke-linecap="round"
@@ -246,6 +252,7 @@
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         stroke-linecap="round"
@@ -260,6 +267,7 @@
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         stroke-linecap="round"
@@ -285,6 +293,7 @@
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                     aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
                       stroke-linecap="round"
@@ -372,6 +381,7 @@
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
                           stroke-linecap="round"
@@ -386,6 +396,7 @@
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
                           stroke-linecap="round"
@@ -409,6 +420,7 @@
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         stroke-linecap="round"
@@ -504,6 +516,7 @@
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
                           stroke-linecap="round"
@@ -522,6 +535,7 @@
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                       </svg>
@@ -561,6 +575,7 @@
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
                           stroke-linecap="round"
@@ -579,6 +594,7 @@
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                       </svg>
@@ -642,11 +658,11 @@
                               {% if PromTime %}
                                   {{ PromTime|floatformat:2 }}
                               {% else %}
-                                  No hay sitios caídos
+                                  --
                               {% endif %}
                           </span>
                             <span class="inline-block px-2 py-px ml-2 text-xs text-green-500 bg-green-100 rounded-md">
-                              +4.4%
+                              {{ percentageTime|floatformat:2 }}
                             </span>
                           </div>
                           <div>
@@ -656,13 +672,19 @@
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
+                                xmlns="http://www.w3.org/2000/svg"
                               >
-                                <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                />
+                                <!-- Círculo exterior (cara del reloj) -->
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" />
+
+                                <!-- Manecilla de la hora -->
+                                <line x1="12" y1="12" x2="12" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+
+                                <!-- Manecilla del minuto -->
+                                <line x1="12" y1="12" x2="16" y2="8" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+
+                                <!-- Manecilla del segundo -->
+                                <line x1="12" y1="12" x2="12" y2="3" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-dasharray="3,3" />
                               </svg>
                             </span>
                           </div>
@@ -678,7 +700,7 @@
                             </h6>
                             <span class="text-xl font-semibold">{{ count }}</span>
                             <span class="inline-block px-2 py-px ml-2 text-xs text-green-500 bg-green-100 rounded-md">
-                              +2.6%
+                              {{ percentageup|floatformat:2 }}%
                             </span>
                           </div>
                           <div>
@@ -688,12 +710,13 @@
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
+                                xmlns="http://www.w3.org/2000/svg"
                               >
                                 <path
                                   stroke-linecap="round"
                                   stroke-linejoin="round"
                                   stroke-width="2"
-                                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                                  d="M3 4a2 2 0 012-2h14a2 2 0 012 2v16a2 2 0 01-2 2H5a2 2 0 01-2-2V4zm2 0v2h14V4H5zm0 4v10h14V8H5z"
                                 />
                               </svg>
                             </span>
@@ -716,7 +739,7 @@
                               {% endif %}
                           </span>
                             <span class="inline-block px-2 py-px ml-2 text-xs text-red-900 bg-red-300 rounded-md">
-                              +3.1%
+                                  {{ percentagedown }}
                             </span>
                           </div>
                           <div>
@@ -726,12 +749,13 @@
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
+                                xmlns="http://www.w3.org/2000/svg"
                               >
                                 <path
                                   stroke-linecap="round"
                                   stroke-linejoin="round"
                                   stroke-width="2"
-                                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                                  d="M11 17H3m0 0V9m0 8l8-8 4 4 6-6"
                                 />
                               </svg>
                             </span>
@@ -747,6 +771,7 @@
                         <thead class="bg-gray-50 text-gray-800">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Sitio Web</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Response Time</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Estado Actual</th>
                                 <th class="hidden px-6 py-3 text-left text-xs font-medium uppercase tracking-wider md:table-cell">Código de Respuesta</th>
                                 <th class="hidden px-6 py-3 text-left text-xs font-medium uppercase tracking-wider md:table-cell">Estado</th>
@@ -758,6 +783,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-left">
                                     <a href="{{ site.url }}" class="text-blue-500 hover:underline">{{ site.name }}</a>
                                 </td>
+                                <td class="hidden px-6 py-4 whitespace-nowrap text-left md:table-cell">{{ site.response_time}}
                                 <td class="px-6 py-4 whitespace-nowrap text-left {% if site.status == 'Operativo' %}text-green-600{% else %}text-red-600{% endif %} font-bold">{{ site.status }}</td>
                                 <td class="hidden px-6 py-4 whitespace-nowrap text-left md:table-cell">{{ site.code }}</td>
                                 <td class="hidden px-6 py-4 whitespace-nowrap text-left md:table-cell">{{ site.status }}</td>
