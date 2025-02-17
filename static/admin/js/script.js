@@ -125,9 +125,11 @@ new Chart(ctxServerStatus, {
   }
 });
 
+      const sortedData = data.sort((a, b) => new Date(a.date_error) - new Date(b.date_error));
+
       // Mostrar detalles en el div
       const errorDetails = document.getElementById('errorDetails');
-      const errorRows = data.map(item => `
+      const errorRows = sortedData.map(item => `
         <tr>
           <td class="px-4 py-2 text-gray-700 border-b dark:text-light">${item.site_url}</td>
           <td class="px-4 py-2 text-gray-600 border-b dark:text-light">${item.date_error}</td>

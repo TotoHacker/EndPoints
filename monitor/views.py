@@ -103,7 +103,7 @@ def send_email(subject, body, to_email):
 
         # Agregar los sitios caídos al cuerpo del correo
         for site in body:
-            html_body += f"<li><strong>{site['name']}</strong>: {site['url']}</li>"
+            html_body += f"<li><strong>{site['name']}</strong>: {site['url']} {site['status']}</li>"
 
         html_body += """
             </ul>

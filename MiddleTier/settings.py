@@ -29,6 +29,7 @@ SECRET_KEY = 'django-insecure-avrm9ajh&mw1-=bk*(f*_f5%7!1221p_=2_n(x0h5((vuw9d$r
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 EMAIL_HOST = 'smtp.googlemail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.getenv("EMAILUSER", default="")

@@ -73,8 +73,8 @@ def realizar_revision():
             response_time = float(service.get('response_time', 0) or 0)
             total_response_time += response_time
             n=n+1
-    PromTime=total_response_time/5/n
-    calpercentTime = (100/5) * PromTime
+    PromTime=total_response_time/8/n
+    calpercentTime = (100/8) * PromTime
     percentageTime=100-calpercentTime
         
    
@@ -82,8 +82,8 @@ def realizar_revision():
     # Enviar notificaciones si hay sitios caídos
     if sitios_caidos:
         subject = "Servicios caídos en el monitor"
-        # send_email(subject, sitios_caidos, 'totochucl@gmail.com')
-
+        send_email(subject, sitios_caidos, 'anovelo@thedolphinco.com')
+        send_email(subject, sitios_caidos, 'testerqa@thedolphinco.com')
         # Registrar errores en la API
         for sitio in sitios_caidos:
             URL = "http://127.0.0.1:8000/api/syserrors/"
