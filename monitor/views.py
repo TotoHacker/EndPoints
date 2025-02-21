@@ -80,6 +80,7 @@ def InitialStatus():
 # Vista para el inicio de sesión
 
 def send_email(subject, body, to_email):
+    
     try:
         # Configuración del servidor SMTP de Gmail
         from_email = settings.EMAIL_HOST_USER  # Asegúrate de que esté configurado en settings.py
@@ -103,7 +104,7 @@ def send_email(subject, body, to_email):
 
         # Agregar los sitios caídos al cuerpo del correo
         for site in body:
-            html_body += f"<li><strong>{site['name']}</strong>: {site['url']} {site['status']}</li>"
+            html_body += f"<li><strong>{site['name']}</strong>: {site['url']}, {site['status']}</li>"
 
         html_body += """
             </ul>

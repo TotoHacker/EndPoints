@@ -59,12 +59,14 @@ def realizar_revision():
     n=0
     percentageTime=0
     sitios_caidos = []
+    
     # Identificar sitios caídos
     for service in website_status:
         if service['status'] != 'Operativo':
             sitios_caidos.append({
                 'name': service['name'],
                 'code': service['code'],
+                'status': service['status'],
                 'url': service.get('url', 'URL no disponible'),
                 'response_time':service.get('response_time')
             })
@@ -73,8 +75,8 @@ def realizar_revision():
             response_time = float(service.get('response_time', 0) or 0)
             total_response_time += response_time
             n=n+1
-    PromTime=total_response_time/8/n
-    calpercentTime = (100/8) * PromTime
+    PromTime=total_response_time/6/n
+    calpercentTime = (100/6) * PromTime
     percentageTime=100-calpercentTime
         
    
